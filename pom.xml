@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--region Your particular project data -->
+    <groupId>org.white_sdev.template.logger_db_runnable_template</groupId>
+    <artifactId>logger-db-runnable-template</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Description of my application</description>
+    <!-- This section (packaging) can be defined if the project is meant to be a desktop application or a JAR will be generated. -->
+    <packaging>jar</packaging>
+    <!--endregion-->
+
+    <properties>
+        <!--region Configure Java version & Main full package and class name -->
+        <!-- WARNING: add release scope if 1.9 and older versions are used at build/plugins/plugin/[maven-compiler-plugin]/configuration-->
+        <java.version>8</java.version>
+        <main.class>org.white_sdev.template.logger_db_runnable_template.LoggerDbRunnableTemplate</main.class>
+        <!--endregion-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <!--region CREDENTIALS of the H2 Database to be created AND possibly used to connect if spring is configured -->
+        <!-- you can edit these credentials and if H2 is configured these will be used to generate the database -->
+        <h2.url>jdbc:h2:./target/db/inmemorydb</h2.url>
+        <h2.user>sa</h2.user>
+        <h2.password>sa</h2.password>
+        <!--endregion-->
+    </properties>
+
+    <!--region Spring configuration (in case that you want to use Spring to manage your project)-->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.0.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <!--endregion-->
+
+    <dependencies>
+
+        <!--region SpringBoot+Hibernate-->
+
+        <!--region Spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--endregion Spring boot -->
+
+        <!--region Controller. For JSONs/HTTP Calls -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--endregion Controller-->
+
+        <!--region SpringBootPersistence -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!--region Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <!--	    <scope>compile</scope>
+            <type>jar</type>-->
+        </dependency>
+
+        <!-- Hibernate Entities Validations @NotBlank (manually added )-->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <type>jar</type>
+        </dependency>
+        <!--endregion Hibernate-->
+
+        <!--region Oracle. In case you are using an Oracle database-->
+        <!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 -->
+<!--        <dependency>-->
+<!--            <groupId>com.oracle.ojdbc</groupId>-->
+<!--            <artifactId>ojdbc10</artifactId>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
+        <!--endregion Oracle-->
+
+        <!--endregion SpringBootPersistence-->
+
+        <!--endregion SpringBoot+Hibernate-->
+
+        <!--region Logger Configuration -->
+        <!-- logger guide https://gist.github.com/stykalin/8c77ad2a705eabddc2424eff0e99d1ec -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.17.2</version>
+        </dependency>
+        <!-- endregion -->
+
+        <!--region Lombok (Annotations) Configuration -->
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <type>jar</type>
+        </dependency>
+        <!-- endregion -->
+
+        <!--region White_SeleniumFramework + bonigarcia-webdriver-->
+        <!-- https://mvnrepository.com/artifact/com.github.white-sdev/White_SeleniumFramework -->
+        <dependency>
+            <groupId>com.github.white-sdev</groupId>
+            <artifactId>White_SeleniumFramework</artifactId>
+            <version>0.1.3</version>
+            <exclusions>
+                <exclusion>  <!-- declare the exclusion here -->
+                    <groupId>io.github.bonigarcia</groupId>
+                    <artifactId>webdrivermanager</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <!--endregion White_SeleniumFramework + bonigarcia-webdriver-->
+
+        <!--region OpenCSV to CSV I/O (to/from Java Objects mapping) -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.6</version>
+        </dependency>
+        <!--endregion OpenCSV-->
+
+        <!--region H2 DB dependency-->
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <!--Not necesary to specify the version to use-->
+<!--            <version>RELEASE</version>-->
+            <!--specify if you want to limit the DB use to a specific scope (e.g. testing)-->
+<!--            <scope>test</scope>-->
+        </dependency>
+        <!--endregion H2 DB dependency-->
+
+        <!--region PropertiesManager-->
+        <!-- Not published library that will allow you to easily read properties from Spring application.properties and other properties files with a simple:
+        ```
+        import static org.white_sdev.propertiesmanager.model.service.PropertyProvider.getProperty;
+        //...
+        getProperty("my.property");
+        ```-->
+        <dependency>
+            <groupId>org.bitbucket.white_sdev</groupId>
+            <artifactId>PropertiesManager</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <!--endregion-->
+
+    </dependencies>
+
+    <build>
+        <!--region let Spring application.properties use POM properties -->
+        <!--Required for H2 credential usage for connection, otherwise specify credentials in application.properties manually. -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <!--endregion  -->
+        <plugins>
+            <!--region Unknown-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version> <!-- went back from 2.22.2-->
+            </plugin>
+            <!--endregion-->
+
+            <!-- region Established the java version defined in the properties' section for every scope (compatible with newer java versions) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <!-- WARNING: add release scope for 1.9 and older versions -->
+                    <!--                    <release>${java.version}</release>-->
+                </configuration>
+            </plugin>
+            <!-- endregion -->
+
+            <!-- region Builds an *executable* JAR on package goal -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass> ${main.class} </mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!-- endregion -->
+
+            <!-- region Forces the app to be executed when using `mvn package` -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                    <!--                    <cleanupDaemonThreads>false</cleanupDaemonThreads>-->
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- endregion -->
+
+            <!-- region Spring boot configuration-->
+            <!-- in case spring boot is being used-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+            </plugin>
+            <!-- endregion -->
+
+            <!-- region H2 Database Configuration -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>
+                <version>1.5</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.4.200</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <driver>org.h2.Driver</driver>
+                    <!--region  Automatic configuration from the POM Properties.-->
+                    <url>${h2.url}</url>
+                    <username>${h2.user}</username>
+                    <password>${h2.password}</password>
+                    <autocommit>true</autocommit>
+                    <!--                    <skip>${maven.test.skip}</skip>-->
+                    <!--endregion -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>create-db</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <!--region ScriptFiles-->
+                        <!--if required you can specify the sql scripts to run at creation time or at the end of the execution-->
+                        <!--                        <configuration>-->
+                        <!--                            <srcFiles>-->
+                        <!--                                <srcFile>${sql.dir}/drop_db.sql</srcFile>-->
+                        <!--                                <srcFile>${sql.dir}/tables.sql</srcFile>-->
+                        <!--                                <srcFile>${sql.dir}/constraints.sql</srcFile>-->
+                        <!--                                ... etc ...-->
+                        <!--                            </srcFiles>-->
+                        <!--                        </configuration>-->
+                        <!--endregion ScriotFiles-->
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- endregion -->
+
+            <!-- region Eliminates some compilation glitches for the IDEs when using lombok -->
+            <!--delete if the glitches are not present-->
+            <!--	    <plugin>-->
+            <!--		<groupId>org.projectlombok</groupId>-->
+            <!--		<artifactId>lombok-maven-plugin</artifactId>-->
+            <!--		<version>1.18.12.0</version>-->
+            <!--		<configuration>-->
+            <!--		    <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>-->
+            <!--		    <outputDirectory>${delombok.output}</outputDirectory>-->
+            <!--		    <addOutputDirectory>false</addOutputDirectory>-->
+            <!--		</configuration>-->
+            <!--		<executions>-->
+            <!--		    <execution>-->
+            <!--			 Generate delomboked code -->
+            <!--			<phase>generate-sources</phase>-->
+            <!--			<goals>-->
+            <!--			    <goal>delombok</goal>-->
+            <!--			</goals>-->
+            <!--		    </execution>-->
+            <!--		</executions>-->
+            <!--	    </plugin>-->
+            <!-- endregion -->
+
+        </plugins>
+    </build>
+
+</project>
