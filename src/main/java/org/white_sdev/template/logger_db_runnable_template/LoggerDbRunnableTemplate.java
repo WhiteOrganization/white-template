@@ -27,7 +27,7 @@ public class LoggerDbRunnableTemplate {
 	 * Main method of the application.
 	 * This is the method that will launch the main process and run the provided application.
 	 * This is a special method of the language used to launch the main thread;
-	 * <a href='https://www.oracle.com/java/technologies/jpl1-building-applications.html#class'> more information</a>.
+	 * <a href="https://www.oracle.com/java/technologies/jpl1-building-applications.html#class"> more information</a>.
 	 *
 	 * @param args {@link String} Arguments provided by the caller of the application (Often omitted)
 	 * @author <a href="mailto:obed.vazquez@gmail.com>Obed Vazquez</a>
@@ -37,7 +37,10 @@ public class LoggerDbRunnableTemplate {
 		String logID = "::main(args[]): ";
 		log.trace("{}Start", logID);
 		try {
-			launchMainFrame(new SpringApplicationBuilder(LoggerDbRunnableTemplate.class).headless(false).run(args));
+			launchMainFrame(new SpringApplicationBuilder(LoggerDbRunnableTemplate.class)
+									.headless(false)
+									.run(args),
+							MainFrame.class);
 			log.trace("{}Finish", logID);
 			
 		} catch (Exception e) {
@@ -45,12 +48,12 @@ public class LoggerDbRunnableTemplate {
 		}
 	}
 	
-	public static void launchMainFrame(ApplicationContext context) throws Exception {
+	public static void launchMainFrame(ApplicationContext context, Class<? extends JFrame> mainFrameClass) throws Exception {
 		setLookAndFeel();
 		java.awt.EventQueue.invokeLater(() -> {
-			MainFrame loaderFrame ;
+			JFrame loaderFrame ;
 			try {
-				loaderFrame = context.getBean(MainFrame.class);
+				loaderFrame = context.getBean(mainFrameClass);
 				loaderFrame.setVisible(true);
 				
 			} catch (org.springframework.beans.factory.BeanCreationException e) {

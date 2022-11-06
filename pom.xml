@@ -107,11 +107,12 @@
 
         <!--region Logger Configuration -->
         <!-- logger guide https://gist.github.com/stykalin/8c77ad2a705eabddc2424eff0e99d1ec -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.17.2</version>
-        </dependency>
+        <!-- Spring Boot already has this library -->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.logging.log4j</groupId>-->
+<!--            <artifactId>log4j-slf4j-impl</artifactId>-->
+<!--            <version>2.17.2</version>-->
+<!--        </dependency>-->
         <!-- endregion -->
 
         <!--region Lombok (Annotations) Configuration -->
@@ -131,10 +132,16 @@
             <artifactId>White_SeleniumFramework</artifactId>
             <version>0.1.3</version>
             <exclusions>
-                <exclusion>  <!-- declare the exclusion here -->
-                    <groupId>io.github.bonigarcia</groupId>
-                    <artifactId>webdrivermanager</artifactId>
+                <!-- Excluding slf4j, usually user implements this library -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
                 </exclusion>
+                <!-- In case you are manually importing this library -->
+<!--                <exclusion>-->
+<!--                    <groupId>io.github.bonigarcia</groupId>-->
+<!--                    <artifactId>webdrivermanager</artifactId>-->
+<!--                </exclusion>-->
             </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
@@ -175,6 +182,13 @@
         <dependency>
             <groupId>org.bitbucket.white_sdev</groupId>
             <artifactId>PropertiesManager</artifactId>
+            <!-- Excluding slf4j, usually the user implements this library -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
             <version>1.0.4</version>
         </dependency>
         <!--endregion-->
@@ -192,14 +206,6 @@
         </resources>
         <!--endregion  -->
         <plugins>
-            <!--region Unknown-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.1</version> <!-- went back from 2.22.2-->
-            </plugin>
-            <!--endregion-->
-
             <!-- region Established the java version defined in the properties' section for every scope (compatible with newer java versions) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
