@@ -44,12 +44,20 @@
     <dependencies>
 
         <!--region SpringBoot+Hibernate-->
-
+        <!-- You can use this section if you are planning on not using the spring-boot-starter-web
+             And only using Desktop functionalities -->
         <!--region Spring boot -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter</artifactId>-->
+<!--        </dependency>-->
+
+        <!--region Controller. For JSONs/HTTP Calls -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!--endregion Controller-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -62,13 +70,6 @@
             <scope>test</scope>
         </dependency>
         <!--endregion Spring boot -->
-
-        <!--region Controller. For JSONs/HTTP Calls -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <!--endregion Controller-->
 
         <!--region SpringBootPersistence -->
         <dependency>
