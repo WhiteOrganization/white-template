@@ -1,17 +1,16 @@
 package org.white_sdev.template.logger_db_runnable_template;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.white_sdev.template.logger_db_runnable_template.view.MainFrame;
-
-import java.awt.event.ActionEvent;
+//import org.springframework.context.annotation.ComponentScan;
 
 import javax.swing.*;
 
-import static org.white_sdev.propertiesmanager.model.service.PropertyProvider.getProperty;
+import org.white_sdev.template.logger_db_runnable_template.view.UserFrame;
 
 /**
  * Main class of the application
@@ -21,7 +20,7 @@ import static org.white_sdev.propertiesmanager.model.service.PropertyProvider.ge
  */
 @SpringBootApplication
 @Slf4j
-@ComponentScan(basePackages = {"org.white_sdev.template.logger_db_runnable_template"})
+//@ComponentScan(basePackages = {"org.white_sdev.template.logger_db_runnable_template"})
 public class LoggerDbRunnableTemplate {
 	/**
 	 * Main method of the application.
@@ -37,21 +36,33 @@ public class LoggerDbRunnableTemplate {
 		String logID = "::main(args[]): ";
 		log.trace("{}Start", logID);
 		try {
-			launchMainFrame(new SpringApplicationBuilder(LoggerDbRunnableTemplate.class)
-									.headless(false)
-									.run(args),
-							MainFrame.class);
-			log.trace("{}Finish", logID);
+//			launchWebApplication(args);
+			ApplicationContext deleteMe = launchWebAndDesktopApplication(args);
+			
+			log.trace("{}Finish. ApplicationContext: {}", logID, deleteMe);
 			
 		} catch (Exception e) {
 			throw new RuntimeException("Error during execution of the main application process.", e);
 		}
 	}
 	
+	public static ApplicationContext launchWebApplication(String[] args) {
+		return SpringApplication.run(LoggerDbRunnableTemplate.class, args);
+	}
+	
+	@SneakyThrows
+	public static ApplicationContext launchWebAndDesktopApplication(String[] args) {
+		ApplicationContext springApplicationContext = new SpringApplicationBuilder(LoggerDbRunnableTemplate.class)
+				.headless(false)
+				.run(args);
+		launchMainFrame(springApplicationContext, UserFrame.class);
+		return springApplicationContext;
+	}
+	
 	public static void launchMainFrame(ApplicationContext context, Class<? extends JFrame> mainFrameClass) throws Exception {
 		setLookAndFeel();
 		java.awt.EventQueue.invokeLater(() -> {
-			JFrame loaderFrame ;
+			JFrame loaderFrame;
 			try {
 				loaderFrame = context.getBean(mainFrameClass);
 				loaderFrame.setVisible(true);

@@ -1,0 +1,67 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>logger-db-runnable-template</title>
+    <meta name="description" content="A simple HTML5 Template for new projects.">
+    <meta name="author" content="white_sdev">
+
+    <meta property="og:title" content="A Basic HTML5 Template">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://localhost/logger-db-runnable-template/">
+    <meta property="og:description" content="A simple HTML5 Template for new projects.">
+    <meta property="og:image" content="image.png">
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="css/style.css?v=1.0">
+    <script src="js/scripts.js"></script>
+</head>
+
+<body>
+    <div class="formcontainer">
+        <div class="form">
+            <div class="title">Welcome</div>
+            <div class="subtitle">Let's create your account!</div>
+            <div class="input-container ic1">
+                <input id="first_name" class="input" type="text" placeholder=" " />
+                <div class="cut"></div>
+                <label for="first_name" class="placeholder">First name</label>
+            </div>
+            <!-- <div class="input-container ic2">
+                <input id="lastname" class="input" type="text" placeholder=" " />
+                <div class="cut"></div>
+                <label for="lastname" class="placeholder">Last name</label>
+            </div> -->
+            <div class="input-container ic2">
+                <input id="email" class="input" type="text" placeholder=" " />
+                <div class="cut cut-short"></div>
+                <label for="email" class="placeholder">Email</label>
+            </div>
+            <button onclick="submit()" class="submit">submit</button>
+        </div>
+    </div>
+
+    <div class="button" onclick="sendRequest()"><span>✓</span>Synchronize</div>
+    
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="usersBody">
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
