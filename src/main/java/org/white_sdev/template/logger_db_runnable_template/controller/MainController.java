@@ -1,5 +1,6 @@
 package org.white_sdev.template.logger_db_runnable_template.controller;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -9,14 +10,12 @@ import java.util.Set;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.white_sdev.template.logger_db_runnable_template.model.User;
 import org.white_sdev.template.logger_db_runnable_template.view.UserFrame;
 
@@ -25,13 +24,8 @@ import org.white_sdev.template.logger_db_runnable_template.view.UserFrame;
 @RequestMapping("/api")
 public class MainController {
 	
-	@Autowired
+	@Setter
 	UserFrame view;
-	
-	@Autowired
-	public MainController(UserFrame view) {
-		this.view = view;
-	}
 	
 	public void loadUsers() {
 		String logID = "loadUsers()::";
@@ -63,8 +57,8 @@ public class MainController {
 		add(new User("bar", "bar@dummy.com"));
 	}};
 	
-	public void create(User user) {
-		users.add(user);
+	public boolean create(User user) {
+		return users.add(user);
 	}
 	
 	public void rowSelected() {
@@ -98,8 +92,10 @@ public class MainController {
 	}
 	
 	public void save(User user) {
-		create(user);
-		javax.swing.JOptionPane.showMessageDialog(view, "User Saved");
+		if(create(user))
+			javax.swing.JOptionPane.showMessageDialog(view, "User Saved");
+		else
+			javax.swing.JOptionPane.showMessageDialog(view, "User duplicated");
 		clear();
 		loadUsers();
 	}
@@ -130,7 +126,10 @@ public class MainController {
 	
 	public void delete() {
 		User user = getSelectedUser();
-		if (user == null) javax.swing.JOptionPane.showMessageDialog(view, "Select a user to delete.");
+		if (user == null) {
+			javax.swing.JOptionPane.showMessageDialog(view, "Select a user to delete.");
+			return;
+		}
 		if (users.remove(user)) javax.swing.JOptionPane.showMessageDialog(view, "User deleted");
 		else javax.swing.JOptionPane.showMessageDialog(view, "Impossible to delete user:" + user);
 		clear();

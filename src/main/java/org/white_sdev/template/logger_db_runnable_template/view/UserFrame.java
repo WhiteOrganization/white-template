@@ -1,27 +1,29 @@
 package org.white_sdev.template.logger_db_runnable_template.view;
 
-import javax.annotation.PostConstruct;
 import javax.swing.table.DefaultTableModel;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.white_sdev.template.logger_db_runnable_template.controller.MainController;
-import org.white_sdev.template.logger_db_runnable_template.model.User;
 
 @Slf4j
 @Component
-public class UserFrame extends javax.swing.JFrame {
+public class UserFrame extends javax.swing.JFrame implements InitializingBean {
 	
 	@Autowired
 	MainController mainController;
+	
 	
 	public UserFrame() {
 		initComponents();
 	}
 	
-	@PostConstruct
-	public void init() {
+	@Override
+	public void afterPropertiesSet() {
+		mainController.setView(this);
 		mainController.loadUsers();
 	}
 	
