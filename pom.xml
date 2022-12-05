@@ -47,18 +47,34 @@
             <name>GitHub Maven WhiteOrganization White_SeleniumFramework Repository</name>
             <url>https://maven.pkg.github.com/whiteorganization/white_seleniumframework</url>
         </repository>
+
+        <!-- region JitPack - Pulling dependencies -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <!-- endregion JitPack - Pulling dependencies -->
+
     </repositories>
 
     <dependencies>
 
-        <!--region SpringBoot+Hibernate-->
+        <!--region Spring boot-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- region Spring Boot Desktop only -->
         <!-- You can use this section if you are planning on not using the spring-boot-starter-web
              And only using Desktop functionalities -->
-        <!--region Spring boot -->
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->
 <!--            <artifactId>spring-boot-starter</artifactId>-->
 <!--        </dependency>-->
+        <!-- endregion Spring Boot Desktop only -->
 
         <!--region Controller. For JSONs/HTTP Calls -->
         <dependency>
@@ -67,17 +83,45 @@
         </dependency>
         <!--endregion Controller-->
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
+        <!-- region Spring boot testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--endregion Spring boot -->
+        <!-- region UnitTesting -->
+
+        <!-- region JUnit5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- endregion JUnit5 -->
+
+        <!-- region Mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.9.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- endregion Mockito -->
+
+        <!-- region UnitTesting Assertions -->
+        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.23.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- endregion UnitTesting Assertions -->
+
+        <!-- endregion testing -->
+
+        <!-- endregion Spring boot testing -->
 
         <!--region SpringBootPersistence -->
         <dependency>
@@ -123,7 +167,7 @@
 
         <!--endregion SpringBootPersistence-->
 
-        <!--endregion SpringBoot+Hibernate-->
+        <!--endregion Spring boot -->
 
         <!--region Logger Configuration -->
         <!-- logger guide https://gist.github.com/stykalin/8c77ad2a705eabddc2424eff0e99d1ec -->
@@ -148,21 +192,22 @@
         <!--region White_SeleniumFramework + bonigarcia-webdriver-->
         <!-- https://mvnrepository.com/artifact/com.github.white-sdev/White_SeleniumFramework -->
         <dependency>
-            <groupId>com.github.white-sdev</groupId>
-            <artifactId>white-selenium-framework</artifactId>
-            <version>0.2.3-SNAPSHOT</version>
+                <groupId>com.github.WhiteOrganization</groupId>
+                <artifactId>White_SeleniumFramework</artifactId>
+                <version>white-selenium-framework-0.2.4</version>
             <!-- You need to manually import this library due to lack of maintenance on White_SeleniumFramework -->
-            <!--                <exclusion>-->
-            <!--                    <groupId>io.github.bonigarcia</groupId>-->
-            <!--                    <artifactId>webdrivermanager</artifactId>-->
-            <!--                </exclusion>-->
+            <exclusions>
+                <exclusion>
+                    <groupId>io.github.bonigarcia</groupId>
+                    <artifactId>webdrivermanager</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.3.1</version>
-<!--            <version>RELEASE</version>-->
+            <version>RELEASE</version>
         </dependency>
         <!--endregion White_SeleniumFramework + bonigarcia-webdriver-->
 
