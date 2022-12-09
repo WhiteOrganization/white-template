@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!--region Spring configuration (in case that you want to use Spring to manage your project)-->
+    <!-- region Spring configuration (in case that you want to use Spring to manage your project)-->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -13,7 +13,7 @@
     </parent>
     <!--endregion-->
 
-    <!--region Your particular project data -->
+    <!-- region Your particular project data -->
     <groupId>org.white_sdev.template.logger_db_runnable_template</groupId>
     <artifactId>logger-db-runnable-template</artifactId>
     <version>0.1-SNAPSHOT</version>
@@ -24,16 +24,18 @@
     <!--endregion-->
 
     <properties>
-        <!--region Configure Java version & Main full package and class name -->
+        <!-- region Configure Java version & Main full package and class name -->
         <!-- WARNING: add release scope if 1.9 and older versions are used at build/plugins/plugin/[maven-compiler-plugin]/configuration-->
         <java.version>17</java.version>
         <main.class>org.white_sdev.template.logger_db_runnable_template.LoggerDbRunnableTemplate</main.class>
         <!--endregion-->
+        <!-- region General configurations of the project -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <!--region CREDENTIALS of the H2 Database to be created AND possibly used to connect if spring is configured -->
+        <!-- endregion General configurations of the project -->
+        <!-- region CREDENTIALS of the H2 Database to be created AND possibly used to connect if spring is configured -->
         <!-- you can edit these credentials and if H2 is configured these will be used to generate the database -->
         <h2.url>jdbc:h2:./target/db/inmemorydb</h2.url>
         <h2.user>sa</h2.user>
@@ -190,12 +192,12 @@
             <groupId>io.github.whiteorganization</groupId>
             <artifactId>white-selenium-framework</artifactId>
             <version>0.2.9</version>
-
+            <!-- region Delete if not using JitPack.io -->
             <!-- https://jitpack.io/#WhiteOrganization/White_SeleniumFramework/ -->
 <!--            <groupId>com.github.WhiteOrganization</groupId>-->
 <!--            <artifactId>White_SeleniumFramework</artifactId>-->
 <!--            <version>0.2.9</version>-->
-
+            <!-- endregion Delete if not using JitPack.io -->
             <!-- You might need to manually import this library due to lack of maintenance on White_SeleniumFramework -->
             <exclusions>
                 <exclusion>
@@ -216,7 +218,7 @@
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>5.6</version>
+            <version>5.7.1</version>
         </dependency>
         <!--endregion OpenCSV-->
 
