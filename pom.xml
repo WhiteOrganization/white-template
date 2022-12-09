@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!--region Spring configuration (in case that you want to use Spring to manage your project)-->
+    <!-- region Spring configuration (in case that you want to use Spring to manage your project)-->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -13,7 +13,7 @@
     </parent>
     <!--endregion-->
 
-    <!--region Your particular project data -->
+    <!-- region Your particular project data -->
     <groupId>org.white_sdev.template.logger_db_runnable_template</groupId>
     <artifactId>logger-db-runnable-template</artifactId>
     <version>0.1-SNAPSHOT</version>
@@ -24,16 +24,18 @@
     <!--endregion-->
 
     <properties>
-        <!--region Configure Java version & Main full package and class name -->
+        <!-- region Configure Java version & Main full package and class name -->
         <!-- WARNING: add release scope if 1.9 and older versions are used at build/plugins/plugin/[maven-compiler-plugin]/configuration-->
         <java.version>17</java.version>
         <main.class>org.white_sdev.template.logger_db_runnable_template.LoggerDbRunnableTemplate</main.class>
         <!--endregion-->
+        <!-- region General configurations of the project -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <!--region CREDENTIALS of the H2 Database to be created AND possibly used to connect if spring is configured -->
+        <!-- endregion General configurations of the project -->
+        <!-- region CREDENTIALS of the H2 Database to be created AND possibly used to connect if spring is configured -->
         <!-- you can edit these credentials and if H2 is configured these will be used to generate the database -->
         <h2.url>jdbc:h2:./target/db/inmemorydb</h2.url>
         <h2.user>sa</h2.user>
@@ -42,24 +44,18 @@
     </properties>
 
     <repositories>
-        <repository>
-            <id>github</id>
-            <name>GitHub Maven WhiteOrganization White_SeleniumFramework Repository</name>
-            <url>https://maven.pkg.github.com/whiteorganization/white_seleniumframework</url>
-        </repository>
-
-        <!-- region JitPack - Pulling dependencies -->
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <!-- endregion JitPack - Pulling dependencies -->
-
+        <!-- region GiHub JitPack.io dependencies -->
+        <!-- only if you want to work with JitPack.io for the GitHub dependencies -->
+<!--            <repository>-->
+<!--                <id>jitpack.io</id>-->
+<!--                <url>https://jitpack.io</url>-->
+<!--            </repository>-->
+        <!-- endregion GiHub JitPack.io dependencies -->
     </repositories>
 
     <dependencies>
 
-        <!--region Spring boot-->
+        <!-- region Spring boot-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -76,7 +72,7 @@
 <!--        </dependency>-->
         <!-- endregion Spring Boot Desktop only -->
 
-        <!--region Controller. For JSONs/HTTP Calls -->
+        <!-- region Controller. For JSONs/HTTP Calls -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -123,13 +119,13 @@
 
         <!-- endregion Spring boot testing -->
 
-        <!--region SpringBootPersistence -->
+        <!-- region SpringBootPersistence -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!--region Hibernate -->
+        <!-- region Hibernate -->
 <!--        <dependency>-->
 <!--            <groupId>org.hibernate</groupId>-->
 <!--            <artifactId>hibernate-core</artifactId>-->
@@ -156,7 +152,7 @@
         </dependency>
         <!--endregion Hibernate-->
 
-        <!--region Oracle. In case you are using an Oracle database-->
+        <!-- region Oracle. In case you are using an Oracle database-->
         <!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 -->
 <!--        <dependency>-->
 <!--            <groupId>com.oracle.ojdbc</groupId>-->
@@ -169,7 +165,7 @@
 
         <!--endregion Spring boot -->
 
-        <!--region Logger Configuration -->
+        <!-- region Logger Configuration -->
         <!-- logger guide https://gist.github.com/stykalin/8c77ad2a705eabddc2424eff0e99d1ec -->
         <!-- Spring Boot already has this library -->
 <!--        <dependency>-->
@@ -179,7 +175,7 @@
 <!--        </dependency>-->
         <!-- endregion -->
 
-        <!--region Lombok (Annotations) Configuration -->
+        <!-- region Lombok (Annotations) Configuration -->
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -189,13 +185,20 @@
         </dependency>
         <!-- endregion -->
 
-        <!--region White_SeleniumFramework + bonigarcia-webdriver-->
+        <!-- region White_SeleniumFramework + bonigarcia-webdriver-->
         <!-- https://mvnrepository.com/artifact/com.github.white-sdev/White_SeleniumFramework -->
         <dependency>
-                <groupId>com.github.WhiteOrganization</groupId>
-                <artifactId>White_SeleniumFramework</artifactId>
-                <version>white-selenium-framework-0.2.4</version>
-            <!-- You need to manually import this library due to lack of maintenance on White_SeleniumFramework -->
+            <!-- new Maven Central Repo -->
+            <groupId>io.github.whiteorganization</groupId>
+            <artifactId>white-selenium-framework</artifactId>
+            <version>0.2.9</version>
+            <!-- region Delete if not using JitPack.io -->
+            <!-- https://jitpack.io/#WhiteOrganization/White_SeleniumFramework/ -->
+<!--            <groupId>com.github.WhiteOrganization</groupId>-->
+<!--            <artifactId>White_SeleniumFramework</artifactId>-->
+<!--            <version>0.2.9</version>-->
+            <!-- endregion Delete if not using JitPack.io -->
+            <!-- You might need to manually import this library due to lack of maintenance on White_SeleniumFramework -->
             <exclusions>
                 <exclusion>
                     <groupId>io.github.bonigarcia</groupId>
@@ -211,15 +214,15 @@
         </dependency>
         <!--endregion White_SeleniumFramework + bonigarcia-webdriver-->
 
-        <!--region OpenCSV to CSV I/O (to/from Java Objects mapping) -->
+        <!-- region OpenCSV to CSV I/O (to/from Java Objects mapping) -->
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>5.6</version>
+            <version>5.7.1</version>
         </dependency>
         <!--endregion OpenCSV-->
 
-        <!--region H2 DB dependency-->
+        <!-- region H2 DB dependency-->
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -231,7 +234,7 @@
         </dependency>
         <!--endregion H2 DB dependency-->
 
-        <!--region PropertiesManager-->
+        <!-- region PropertiesManager-->
         <!-- Not published library that will allow you to easily read properties from Spring application.properties and other properties files with a simple:
         ```
         import static org.white_sdev.propertiesmanager.model.service.PropertyProvider.getProperty;
@@ -255,7 +258,7 @@
     </dependencies>
 
     <build>
-        <!--region let Spring application.properties use POM properties -->
+        <!-- region let Spring application.properties use POM properties -->
         <!--Required for H2 credential usage for connection, otherwise specify credentials in application.properties manually. -->
         <resources>
             <resource>
