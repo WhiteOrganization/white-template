@@ -1,4 +1,4 @@
-package org.white_sdev.template.logger_db_runnable_template.controller;
+package org.white_sdev.templates.white_template.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

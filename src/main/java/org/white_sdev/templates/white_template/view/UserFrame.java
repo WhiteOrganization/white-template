@@ -1,16 +1,16 @@
-package org.white_sdev.template.logger_db_runnable_template.view;
+package org.white_sdev.templates.white_template.view;
 
 import javax.swing.table.DefaultTableModel;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.white_sdev.template.logger_db_runnable_template.controller.MainController;
+import org.white_sdev.templates.white_template.controller.MainController;
 
 @Slf4j
 @Component
+@SuppressWarnings("all")
 public class UserFrame extends javax.swing.JFrame implements InitializingBean {
 	
 	@Autowired
@@ -39,7 +39,7 @@ public class UserFrame extends javax.swing.JFrame implements InitializingBean {
 		return emailTextField;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 		
