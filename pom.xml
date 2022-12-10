@@ -15,7 +15,7 @@
 
     <!-- region Your particular project data -->
     <groupId>org.white_sdev.templates</groupId>
-    <artifactId>white_template</artifactId>
+    <artifactId>white-template</artifactId>
     <version>0.1-SNAPSHOT</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Description of my application</description>
