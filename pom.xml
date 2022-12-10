@@ -234,26 +234,14 @@
         </dependency>
         <!--endregion H2 DB dependency-->
 
-        <!-- region PropertiesManager-->
-        <!-- Not published library that will allow you to easily read properties from Spring application.properties and other properties files with a simple:
-        ```
-        import static org.white_sdev.propertiesmanager.model.service.PropertyProvider.getProperty;
-        //...
-        getProperty("my.property");
-        ```-->
+        <!-- region FlatLaf - Flat swing Look and Feel -->
+        <!-- https://search.maven.org/artifact/com.formdev/flatlaf/2.6/jar -->
         <dependency>
-            <groupId>org.bitbucket.white_sdev</groupId>
-            <artifactId>PropertiesManager</artifactId>
-            <!-- Excluding slf4j, usually the user implements this library -->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-simple</artifactId>
-                </exclusion>
-            </exclusions>
-            <version>1.0.4</version>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>2.6</version>
         </dependency>
-        <!--endregion-->
+        <!-- endregion FlatLaf - Flat swing Look and Feel -->
 
     </dependencies>
 
