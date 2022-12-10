@@ -1,16 +1,15 @@
 package org.white_sdev.template.logger_db_runnable_template;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
-//import org.springframework.context.annotation.ComponentScan;
+import org.white_sdev.template.logger_db_runnable_template.view.UserFrame;
 
 import javax.swing.*;
-
-import org.white_sdev.template.logger_db_runnable_template.view.UserFrame;
 
 /**
  * Main class of the application
@@ -59,14 +58,14 @@ public class LoggerDbRunnableTemplate {
 		return springApplicationContext;
 	}
 	
-	public static void launchMainFrame(ApplicationContext context, Class<? extends JFrame> mainFrameClass) throws Exception {
-		setLookAndFeel();
+	@SneakyThrows
+	public static void launchMainFrame(ApplicationContext context, Class<? extends JFrame> mainFrameClass) {
 		java.awt.EventQueue.invokeLater(() -> {
-			JFrame loaderFrame;
+			setFlatDarkLookAndFeel();
 			try {
-				loaderFrame = context.getBean(mainFrameClass);
-				loaderFrame.setVisible(true);
-				
+				var frame = context.getBean(mainFrameClass);
+				frame.setLocationRelativeTo(null);
+				frame.setVisible(true);
 			} catch (org.springframework.beans.factory.BeanCreationException e) {
 				JOptionPane.showMessageDialog(null, "A Fatal exception has occurred when initializing the application.\n " + "Check the logs for more information.");
 				throw e;
@@ -74,11 +73,18 @@ public class LoggerDbRunnableTemplate {
 		});
 	}
 	
-	public static void setLookAndFeel() throws Exception {
+	public static void setWindowsLookAndFeel() throws Exception {
 		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
 			if ("Windows".equals(info.getName())) {
 				javax.swing.UIManager.setLookAndFeel(info.getClassName());
 				break;
 			}
+	}
+	
+	@SneakyThrows(UnsupportedLookAndFeelException.class)
+	public static void setFlatDarkLookAndFeel() {
+		String logID = "::setLookAndFeel([]): ";
+		log.trace("{}Start Installing FlatDarkLookAndFeel", logID);
+		UIManager.setLookAndFeel(new FlatDarkLaf());
 	}
 }
