@@ -1,4 +1,4 @@
-package org.white_sdev.template.logger_db_runnable_template.controller;
+package org.white_sdev.templates.white_template.controller;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.white_sdev.template.logger_db_runnable_template.model.User;
-import org.white_sdev.template.logger_db_runnable_template.view.UserFrame;
+import org.white_sdev.templates.white_template.model.User;
+import org.white_sdev.templates.white_template.view.UserFrame;
 
 @Slf4j
 @RestController()
@@ -52,7 +52,7 @@ public class MainController {
 		}
 	}
 	
-	Set<User> users = new HashSet<User>() {{
+	Set<User> users = new HashSet<>() {{
 		add(new User("foo", "foo@dummy.com"));
 		add(new User("bar", "bar@dummy.com"));
 	}};

@@ -1,4 +1,4 @@
-package org.white_sdev.template.logger_db_runnable_template.model;
+package org.white_sdev.templates.white_template.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;

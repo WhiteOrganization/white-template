@@ -1,4 +1,4 @@
-package org.white_sdev.template.logger_db_runnable_template;
+package org.white_sdev.templates.white_template;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import lombok.SneakyThrows;
@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
-import org.white_sdev.template.logger_db_runnable_template.view.UserFrame;
+import org.white_sdev.templates.white_template.view.UserFrame;
 
 import javax.swing.*;
 
