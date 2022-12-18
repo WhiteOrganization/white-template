@@ -37,7 +37,7 @@ public class MainController {
 	public List<User> getUsers() {
 		String logID = "::getUsers(): ";
 		log.trace("{}Start ", logID);
-		return new ArrayList<>(users);
+		return new ArrayList<>(getUsersSet());
 	}
 	
 	@PostMapping("/user")
@@ -56,6 +56,10 @@ public class MainController {
 		add(new User("foo", "foo@dummy.com"));
 		add(new User("bar", "bar@dummy.com"));
 	}};
+	
+	public Set<User> getUsersSet(){
+		return users;
+	}
 	
 	public boolean create(User user) {
 		return users.add(user);
@@ -92,13 +96,18 @@ public class MainController {
 	}
 	
 	public void save(User user) {
-		if(create(user))
+		save(user, true);
+	}
+	
+	public void save(User user, boolean showAlert) {
+		if(create(user) && showAlert)
 			javax.swing.JOptionPane.showMessageDialog(view, "User Saved");
-		else
+		else if(showAlert)
 			javax.swing.JOptionPane.showMessageDialog(view, "User duplicated");
 		clear();
 		loadUsers();
 	}
+	
 	
 	public void update(User updatedUser) {
 		for (User user : users) {
@@ -130,10 +139,14 @@ public class MainController {
 			javax.swing.JOptionPane.showMessageDialog(view, "Select a user to delete.");
 			return;
 		}
-		if (users.remove(user)) javax.swing.JOptionPane.showMessageDialog(view, "User deleted");
+		if (remove(user)) javax.swing.JOptionPane.showMessageDialog(view, "User deleted");
 		else javax.swing.JOptionPane.showMessageDialog(view, "Impossible to delete user:" + user);
 		clear();
 		loadUsers();
+	}
+	
+	public boolean remove(User user){
+		return users.remove(user);
 	}
 	
 	public static class TableUtils {

@@ -191,7 +191,7 @@
             <!-- new Maven Central Repo -->
             <groupId>io.github.whiteorganization</groupId>
             <artifactId>white-selenium-framework</artifactId>
-            <version>0.2.9</version>
+            <version>0.3.2</version>
             <!-- region Delete if not using JitPack.io -->
             <!-- https://jitpack.io/#WhiteOrganization/White_SeleniumFramework/ -->
 <!--            <groupId>com.github.WhiteOrganization</groupId>-->
