@@ -1,11 +1,13 @@
 package org.white_sdev.templates.white_template.controller;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.assertj.core.api.SoftAssertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +17,9 @@ import org.white_sdev.templates.white_template.pom.IndexPageSelenium;
 import org.white_sdev.white_seleniumframework.framework.AutomationScenario;
 import org.white_sdev.white_seleniumframework.framework.AutomationSuite;
 import org.white_sdev.white_seleniumframework.framework.WebDriverUtils;
+
+import java.io.File;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,6 +44,7 @@ public class MainControllerFunctionalTests {
 	
 	void registerTestCase(String name) {
 		AutomationSuite.registerAutomationScenario(new AutomationScenario() {
+			@SneakyThrows
 			@Override
 			public void run(final WebDriverUtils utils) {
 				String logID = "::run(): ";
@@ -76,7 +82,11 @@ public class MainControllerFunctionalTests {
 					
 					log.info("{}Finish", logID);
 				} catch (Exception | AssertionError ex) {
-					//TODO capture evidence with TestNG
+					
+					String screenShotFileName="./Screenshots/" + logID + "_" + LocalDate.now().toString().replace(":| ", "_") + ".png";
+					log.warn("{}Evidences:{}", logID, screenShotFileName);
+					FileUtils.copyFile(((TakesScreenshot) utils.driver).getScreenshotAs(OutputType.FILE),
+									   new File(screenShotFileName));
 					utils.closeWebBrowserWindow();
 					throw new RuntimeException(
 							String.format(
@@ -93,9 +103,10 @@ public class MainControllerFunctionalTests {
 		});
 	}
 	
+	@SneakyThrows
 	@Test
 	public void registerUserSeleniumTest() {
-		String logID="::registerUserSeleniumTest(): new User registration Test";
+		String logID = "registerUserSeleniumTest-";
 		log.trace("{}Start ", logID);
 		//Set up
 		WebDriverManager.chromedriver().setup();
@@ -129,7 +140,10 @@ public class MainControllerFunctionalTests {
 			driver.quit();
 			
 		} catch (Exception | AssertionError ex) {
-			//TODO capture evidence with TestNG
+			String screenShotFileName="./Screenshots/" + logID + "_" + LocalDate.now().toString().replace(":| ", "_") + ".png";
+			log.warn("{}Evidences:{}", logID, screenShotFileName);
+			FileUtils.copyFile(((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE),
+							   new File(screenShotFileName));
 			driver.quit();
 			throw new RuntimeException(
 					String.format(

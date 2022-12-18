@@ -12,7 +12,6 @@ import java.time.Duration;
 import java.util.stream.Collectors;
 
 @Slf4j
-//TODO Generate documentation for every method
 public class IndexPageSelenium {
 	
 	public static void registerUser(final WebDriver driver, User user) {
