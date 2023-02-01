@@ -1,5 +1,6 @@
 package org.white_sdev.templates.white_template.controller;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,11 @@ class MainControllerIntegrationTests {
 	
 	@Autowired
 	MainController mainController;
+	
+	@BeforeAll
+	public static void beforeAll(){
+		System.setProperty("java.awt.headless", "false");
+	}
 	
 	@Test
 	public void customTest() {
