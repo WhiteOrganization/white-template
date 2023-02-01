@@ -1,12 +1,16 @@
 package org.white_sdev.templates.white_template.view;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.stereotype.Component;
 import org.white_sdev.templates.white_template.controller.MainController;
 
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.net.URI;
 
 @Slf4j
 @Component
@@ -274,8 +278,24 @@ public class UserFrame extends javax.swing.JFrame implements InitializingBean {
 		mainController.loadUsers();
 	}//GEN-LAST:event_refreshButtonActionPerformed
 	
-	private void executeTestsJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executeTestsJButtonActionPerformed
-		mainController.executeTests();
+	@LocalServerPort
+	int port;
+	@SneakyThrows
+	private void executeTestsJButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_executeTestsJButtonActionPerformed
+		String result = org.springframework.web.reactive.function.client.WebClient.builder().build().get()
+				.uri(new URI("http://localhost:"+port+"/api/tests"))
+//					.header("Authorization", "Bearer MY_SECRET_TOKEN")
+//					.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+//					.accept(MediaType.APPLICATION_JSON)
+//				.body(org.springframework.web.reactive.function.BodyInserters.fromValue(myJson))
+//					.body(BodyInserters.fromFormData(bodyValues))
+//					.body(bodyInserter)
+//					.body(BodyInserters.fromObject(myJson))
+//					.body(myJsonMono,MyJson.class)
+				.retrieve()
+				.bodyToMono(String.class)
+//					.doOnNext(System.out::println)
+				.block();
 	}//GEN-LAST:event_executeTestsJButtonActionPerformed
 	
 	// Variables declaration - do not modify//GEN-BEGIN:variables

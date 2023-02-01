@@ -27,7 +27,7 @@
         <!-- region Configure Java version & Main full package and class name -->
         <!-- WARNING: add release scope if 1.9 and older versions are used at build/plugins/plugin/[maven-compiler-plugin]/configuration-->
         <java.version>17</java.version>
-        <main.class>org.white_sdev.templates.white_template.LoggerDbRunnableTemplate</main.class>
+        <main.class>org.white_sdev.templates.white_template.WhiteTemplate</main.class>
         <!--endregion-->
         <!-- region General configurations of the project -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -178,6 +178,30 @@
         <!--endregion Oracle-->
 
         <!--endregion SpringBootPersistence-->
+
+
+        <!-- region Rest Calls -->
+
+        <!-- region WebFlux for Rest calls with Spring WebClient -->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-webflux -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+            <version>6.0.3</version>
+        </dependency>
+        <!-- endregion WebFlux for Rest calls with Spring WebClient -->
+
+        <!-- region Reactor (ReactiveRequest)-->
+        <!-- https://mvnrepository.com/artifact/io.projectreactor.netty/reactor-netty -->
+        <dependency>
+            <groupId>io.projectreactor.netty</groupId>
+            <artifactId>reactor-netty</artifactId>
+            <version>1.0.15</version>
+        </dependency>
+        <!-- endregion Reactor (ReactiveRequest)-->
+
+        <!-- endregion Rest Calls -->
+
 
         <!--endregion Spring boot -->
 

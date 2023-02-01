@@ -82,7 +82,7 @@ public class MainController {
 	 * More information at: https://junit.org/junit5/docs/current/user-guide/#launcher-api
 	 * Some examples: https://www.baeldung.com/junit-tests-run-programmatically-from-java
 	 */
-	private static void executeTestsWithLauncher(String...packages){
+	private static void executeTestsWithLauncher(){
 		String logID="::executeTestsWithLauncher([]): ";
 		log.trace("{}Start ", logID);
 		final LauncherDiscoveryRequest request =
