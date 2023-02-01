@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.white_sdev.templates.white_template.model.User;
 import org.white_sdev.templates.white_template.pom.IndexPage;
@@ -19,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @lombok.extern.slf4j.Slf4j
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MainControllerFunctionalTests extends SeleniumJupiterScenario {
 	
 	//region SeleniumJupiter Extension
@@ -32,6 +33,9 @@ public class MainControllerFunctionalTests extends SeleniumJupiterScenario {
 	}
 	//endregion SeleniumJupiter Extension
 	
+	@Value("${local.server.port}")
+	protected int localPort;
+	
 	//region Tests
 	
 	@BeforeAll
@@ -42,9 +46,6 @@ public class MainControllerFunctionalTests extends SeleniumJupiterScenario {
 	//region CRUD User Test
 	@Autowired
 	MainController mainController;
-	
-	IndexPage indexPage;
-	
 	public static int userCount = 0;
 	
 	@Test
@@ -60,7 +61,7 @@ public class MainControllerFunctionalTests extends SeleniumJupiterScenario {
 		try {
 			
 			//region Setup
-			indexPage = new IndexPage(driver).openPage();
+			IndexPage indexPage = new IndexPage(driver).openPage(localPort);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 			User user = new User("baz" + (++MainControllerFunctionalTests.userCount), "baz@zinga.com");
 			//endregion Setup

@@ -41,7 +41,11 @@ public class IndexPage {
 	
 	
 	public IndexPage openPage(){
-		utils.openURL("http://localhost:8080");
+		return openPage(8080);
+	}
+	
+	public IndexPage openPage(int port){
+		utils.openURL("http://localhost:"+port);
 		return this;
 	}
 	
