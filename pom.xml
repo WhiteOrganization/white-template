@@ -41,6 +41,9 @@
         <h2.user>sa</h2.user>
         <h2.password>sa</h2.password>
         <!--endregion-->
+        <junit.jupiter.version>5.9.2</junit.jupiter.version>
+        <junit.platform.version>1.3.2</junit.platform.version>
+        <logs.path>${project.build.directory}/test-reports/logs</logs.path>
     </properties>
 
     <repositories>
@@ -84,7 +87,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <!-- when using docker -->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.junit.vintage</groupId>-->
+<!--                    <artifactId>junit-vintage-engine</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
         </dependency>
+
         <!-- region UnitTesting -->
 
         <!-- region JUnit5 -->
@@ -100,7 +111,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.9.0</version>
+            <version>4.10.0</version>
             <scope>test</scope>
         </dependency>
         <!-- endregion Mockito -->
@@ -185,34 +196,98 @@
         </dependency>
         <!-- endregion -->
 
+        <!-- region Testing -->
+
+        <!-- region Automation Functional Testing -->
+
+
         <!-- region White_SeleniumFramework + bonigarcia-webdriver-->
+
+        <!-- region White_SeleniumFramework -->
         <!-- https://mvnrepository.com/artifact/com.github.white-sdev/White_SeleniumFramework -->
         <dependency>
             <!-- new Maven Central Repo -->
             <groupId>io.github.whiteorganization</groupId>
             <artifactId>white-selenium-framework</artifactId>
-            <version>0.3.2</version>
-            <!-- region Delete if not using JitPack.io -->
-            <!-- https://jitpack.io/#WhiteOrganization/White_SeleniumFramework/ -->
-<!--            <groupId>com.github.WhiteOrganization</groupId>-->
-<!--            <artifactId>White_SeleniumFramework</artifactId>-->
-<!--            <version>0.2.9</version>-->
-            <!-- endregion Delete if not using JitPack.io -->
+            <version>2.0.2</version>
             <!-- You might need to manually import this library due to lack of maintenance on White_SeleniumFramework -->
             <exclusions>
                 <exclusion>
                     <groupId>io.github.bonigarcia</groupId>
                     <artifactId>webdrivermanager</artifactId>
                 </exclusion>
+                <!-- Spring Already has this implementation. This exclusion won't be required in the 1.1.1 version-->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
+        <!-- endregion White_SeleniumFramework -->
+        <!-- region bonigarcia WebDriverManager -->
         <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>RELEASE</version>
         </dependency>
+
+        <!-- region HTTPClient5 -->
+        <!-- this was being imported by bonigarcia WebDriverManager but in 5.3.2 version it's no longer the case. -->
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.2.1</version>
+        </dependency>
+        <!-- endregion HTTPClient5 -->
+
+        <!-- endregion bonigarcia WebDriverManager -->
+
+        <!-- region Selenium-Java -->
+        <!-- white-selenium-framework is including it, add it if White_SeleniumFramework is removed -->
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.seleniumhq.selenium</groupId>-->
+        <!--            <artifactId>selenium-java</artifactId>-->
+        <!--            <version>${selenium.version}</version>-->
+        <!--        </dependency>-->
+        <!-- endregion Selenium-Java -->
+
+        <!-- region Selenium-Jupiter -->
+        <!-- white-selenium-framework is including it, add it if White_SeleniumFramework is removed -->
+        <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/selenium-jupiter -->
+        <!--        <dependency>-->
+        <!--            <groupId>io.github.bonigarcia</groupId>-->
+        <!--            <artifactId>selenium-jupiter</artifactId>-->
+        <!--            <version>4.3.3</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.junit.jupiter</groupId>-->
+        <!--            <artifactId>junit-jupiter-api</artifactId>-->
+        <!--            <version>${junit.jupiter.version}</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+
+        <!-- endregion Selenium-Jupiter -->
+
+        <!-- region JUnit5 -->
+        <!-- white-selenium-framework is including it, add it if White_SeleniumFramework is removed -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.junit.jupiter</groupId>-->
+        <!--            <artifactId>junit-jupiter</artifactId>-->
+        <!--            <version>5.9.0</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+        <!-- endregion JUnit5 -->
         <!--endregion White_SeleniumFramework + bonigarcia-webdriver-->
+
+
+        <!-- endregion Automation Functional Testing -->
+
+        <!-- endregion Testing -->
 
         <!-- region OpenCSV to CSV I/O (to/from Java Objects mapping) -->
         <dependency>
@@ -239,13 +314,14 @@
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
-            <version>2.6</version>
+            <version>3.0</version>
         </dependency>
         <!-- endregion FlatLaf - Flat swing Look and Feel -->
 
     </dependencies>
 
     <build>
+<!--        <finalName>${project.artifactId}</finalName>-->
         <!-- region let Spring application.properties use POM properties -->
         <!--Required for H2 credential usage for connection, otherwise specify credentials in application.properties manually. -->
         <resources>
@@ -416,6 +492,34 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
+                <executions>
+                    <execution><goals><goal>test</goal></goals></execution>
+                </executions>
+                <configuration>
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    <reportsDirectory>${logs.path}</reportsDirectory>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>${junit.platform.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>${junit.jupiter.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.0.0-M7</version>
+                <configuration>
+                    <showSuccess>false</showSuccess>
+                </configuration>
             </plugin>
             <!-- endregion -->
 
