@@ -16,6 +16,8 @@ import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,14 +52,14 @@ public class MainController {
 	}
 	
 	@PostMapping("/user")
-	public boolean newUser(@RequestBody User user) {
+	public ResponseEntity<Object> newUser(@RequestBody User user) {
 		String logID = "::createUser(user): ";
 		log.info("{}Creating User - user:{}", logID, user);
 		try {
 			create(user);
-			return true;
+			return ResponseEntity.status(HttpStatus.CREATED).body(Boolean.TRUE);
 		} catch (Exception ex) {
-			return false;
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex);
 		}
 	}
 	

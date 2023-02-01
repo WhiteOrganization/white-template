@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.white_sdev.templates.white_template.model.User;
 import org.white_sdev.white_seleniumframework.framework.SeleniumJupiterScenario;
@@ -25,17 +24,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @lombok.extern.slf4j.Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-//@org.springframework.transaction.annotation.Transactional
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
+@org.springframework.transaction.annotation.Transactional
 class MainControllerIntegrationTests {
-	
-//	@org.springframework.beans.factory.annotation.Value("${local.server.port}")
-//	protected int localPort;
 	
 	@Autowired
 	MainController mainController;
 	@Autowired
 	private MockMvc mockMvc;
+	// Use this for end-to-end tests
 //	@Autowired
 //	private WebTestClient webClient;
 	
@@ -64,19 +61,23 @@ class MainControllerIntegrationTests {
 	
 	//endregion Before & After
 	
+	String moduleSegment = "/api";
+	
 	@Test
 	@SneakyThrows
 //	@org.springframework.test.context.jdbc.Sql("/custom-scenario-set-up-inserts.sql")
 	public void customTest() {
 		
 		//region Set-up
-		SoftAssertions soft = new SoftAssertions();
+		
 		//configuration check
 		assertThat(mainController)
 				.as("Spring initialization is configured and running Verification.")
 				.isNotNull()
 				.isInstanceOf(MainController.class);
+		
 		List<User> initialUsers = mainController.getUsers();
+		SoftAssertions soft = new SoftAssertions();
 		soft.assertThat(initialUsers) //This might not be required in this case.
 				.as("Initial users load (of 2) Verification")
 				.isNotNull()
@@ -86,16 +87,15 @@ class MainControllerIntegrationTests {
 		String jsonUser = javaToJsonMapper.writeValueAsString(dummyUser);
 		//endregion
 		
-		//Main call
-		mockMvc.perform(post("/user")
+		////region Execution
+		mockMvc.perform(post(moduleSegment+"/user")
 								.contentType(MediaType.APPLICATION_JSON)
 								.content(jsonUser))
 				.andExpect(status().isCreated());
-//		mainController.users.remove(firstUser);
-		
 		
 		
 		List<User> finalUsers = mainController.getUsers();
+		
 		soft.assertThat(finalUsers)
 				.as("'Final user list has 1 extra user and it is the created one' Verification")
 				.isNotNull()
@@ -103,6 +103,6 @@ class MainControllerIntegrationTests {
 				.contains(dummyUser)
 				.hasSize(initialUsers.size() + 1);
 		
-		
+		//endregion Execution
 	}
 }

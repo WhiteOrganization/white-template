@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.white_sdev.templates.white_template.model.User;
 import org.white_sdev.templates.white_template.pom.IndexPage;
 import org.white_sdev.white_seleniumframework.framework.SeleniumJupiterScenario;
@@ -33,7 +33,7 @@ public class MainControllerFunctionalTests extends SeleniumJupiterScenario {
 	}
 	//endregion SeleniumJupiter Extension
 	
-	@Value("${local.server.port}")
+	@LocalServerPort
 	protected int localPort;
 	
 	//region Tests
