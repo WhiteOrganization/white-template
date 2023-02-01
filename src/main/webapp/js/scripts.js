@@ -15,7 +15,8 @@ function raw(URI) {
 }
 
 function sendRequest() {
-    consumeGetEndpoint("http://localhost:8080/api/users",
+    var port_number= location.port;
+    consumeGetEndpoint("http://localhost:"+port_number+"/api/users",
         users => {
             let rows = "";
             console.log(users);
@@ -39,7 +40,8 @@ function consumeGetEndpoint(URI, action) {
 }
 
 function submit() {
-    consumePostEndpoint('http://localhost:8080/api/user',
+    var port_number= location.port;
+    consumePostEndpoint("http://localhost:"+port_number+"/api/user",
         {
             first_name: document.getElementById("first_name").value,
             email: document.getElementById("email").value
@@ -60,7 +62,7 @@ function consumePostEndpoint(URI, rawPayload, action) {
         .then(action);
 }
 
-function consumeAscyncPostEndpoint(URI, rawPayload, action) {
+function consumeAsyncPostEndpoint(URI, rawPayload, action) {
     (async () => {
         const rawResponse = await fetch(URI, {
             method: 'POST',
@@ -68,7 +70,7 @@ function consumeAscyncPostEndpoint(URI, rawPayload, action) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(payrawPayloadload)
+            body: JSON.stringify(rawPayload)
         });
         const content = await rawResponse.json();
         action; //this is weird

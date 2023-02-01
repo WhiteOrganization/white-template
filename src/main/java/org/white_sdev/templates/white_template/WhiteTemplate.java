@@ -20,7 +20,7 @@ import javax.swing.*;
 @SpringBootApplication
 @Slf4j
 //@ComponentScan(basePackages = {"org.white_sdev.template.logger_db_runnable_template"})
-public class LoggerDbRunnableTemplate {
+public class WhiteTemplate {
 	/**
 	 * Main method of the application.
 	 * This is the method that will launch the main process and run the provided application.
@@ -46,12 +46,12 @@ public class LoggerDbRunnableTemplate {
 	}
 	
 	public static ApplicationContext launchWebApplication(String[] args) {
-		return SpringApplication.run(LoggerDbRunnableTemplate.class, args);
+		return SpringApplication.run(WhiteTemplate.class, args);
 	}
 	
 	@SneakyThrows
 	public static ApplicationContext launchWebAndDesktopApplication(String[] args) {
-		ApplicationContext springApplicationContext = new SpringApplicationBuilder(LoggerDbRunnableTemplate.class)
+		ApplicationContext springApplicationContext = new SpringApplicationBuilder(WhiteTemplate.class)
 				.headless(false)
 				.run(args);
 		launchMainFrame(springApplicationContext, UserFrame.class);

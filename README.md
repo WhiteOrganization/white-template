@@ -19,7 +19,7 @@ The technologies the project is using.
 
 #### 2.1.1) Development environment
 - DataBase:			H2 (Previously using OracleDB)
-- Java version: 	`1.8`
+- Java version: 	`1.17`
 - Maven
 
 #### 2.1.2) Project Dependencies
@@ -27,8 +27,8 @@ This library uses:
 - **lombok** to log errors and general logs.
     - **Slf4j**
 - **PropertiesManager** to obtain the default properties values.
-- **White_Validations** to validate parameters.
 - **Spring boot**
+- **Selenium-Jupiter**
 
 
 ### 2.2) Configuration Steps
@@ -57,7 +57,7 @@ You can simply use the command to (_clean, build, test and_) run the project wit
 
 #### 4.1) Writing tests.
 
-_Please do. No UT defined at the moment._
+_There is a sample of Unit testing, Integration testing, Functional testing and a non-spring Testing._
 
 #### 4.2) Code review.
 

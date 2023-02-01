@@ -27,7 +27,7 @@
         <!-- region Configure Java version & Main full package and class name -->
         <!-- WARNING: add release scope if 1.9 and older versions are used at build/plugins/plugin/[maven-compiler-plugin]/configuration-->
         <java.version>17</java.version>
-        <main.class>org.white_sdev.templates.white_template.LoggerDbRunnableTemplate</main.class>
+        <main.class>org.white_sdev.templates.white_template.WhiteTemplate</main.class>
         <!--endregion-->
         <!-- region General configurations of the project -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -86,24 +86,39 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <!-- when using docker -->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.junit.vintage</groupId>-->
-<!--                    <artifactId>junit-vintage-engine</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
+<!--            <scope>test</scope>-->
+            <exclusions>
+                <!-- when using docker -->
+                <!--                <exclusion>-->
+                <!--                    <groupId>org.junit.vintage</groupId>-->
+                <!--                    <artifactId>junit-vintage-engine</artifactId>-->
+                <!--                </exclusion>-->
+                <exclusion>
+                    <groupId>org.assertj</groupId>
+                    <artifactId>assertj-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- region UnitTesting -->
+
+        <!-- region AssertJ -->
+        <!-- spring-boot-test is including it, but scope should not be limited to test for main to execute tests -->
+        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.23.1</version>
+            <!--            <scope>test</scope>-->
+        </dependency>
+        <!-- endregion AssertJ -->
 
         <!-- region JUnit5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.9.0</version>
-            <scope>test</scope>
+<!--            <scope>test</scope>-->
         </dependency>
         <!-- endregion JUnit5 -->
 
@@ -112,19 +127,9 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>4.10.0</version>
-            <scope>test</scope>
+<!--            <scope>test</scope>-->
         </dependency>
         <!-- endregion Mockito -->
-
-        <!-- region UnitTesting Assertions -->
-        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.23.1</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- endregion UnitTesting Assertions -->
 
         <!-- endregion testing -->
 
@@ -173,6 +178,30 @@
         <!--endregion Oracle-->
 
         <!--endregion SpringBootPersistence-->
+
+
+        <!-- region Rest Calls -->
+
+        <!-- region WebFlux for Rest calls with Spring WebClient -->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-webflux -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+            <version>6.0.3</version>
+        </dependency>
+        <!-- endregion WebFlux for Rest calls with Spring WebClient -->
+
+        <!-- region Reactor (ReactiveRequest)-->
+        <!-- https://mvnrepository.com/artifact/io.projectreactor.netty/reactor-netty -->
+        <dependency>
+            <groupId>io.projectreactor.netty</groupId>
+            <artifactId>reactor-netty</artifactId>
+            <version>1.0.15</version>
+        </dependency>
+        <!-- endregion Reactor (ReactiveRequest)-->
+
+        <!-- endregion Rest Calls -->
+
 
         <!--endregion Spring boot -->
 
@@ -287,6 +316,31 @@
 
         <!-- endregion Automation Functional Testing -->
 
+        <!-- region SRC test execution -->
+        <!-- SRC test execution requires
+            <testOutputDirectory>target/classes</testOutputDirectory>
+            in build to detect the tests classes -->
+        <!-- region JUnit Jupiter Engine -->
+        <!-- JUnit-Jupiter-Engine is already present in testing, but main requires it to execute tests from src -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- endregion JUnit Jupiter Engine -->
+
+        <!-- region JUnit Platform Launcher -->
+        <!-- allows src/main package to execute test with Launcher -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>1.9.1</version>
+        </dependency>
+        <!-- endregion JUnit Platform Launcher -->
+
+        <!-- endregion SRC test execution -->
+
         <!-- endregion Testing -->
 
         <!-- region OpenCSV to CSV I/O (to/from Java Objects mapping) -->
@@ -331,6 +385,7 @@
             </resource>
         </resources>
         <!--endregion  -->
+        <testOutputDirectory>target/classes</testOutputDirectory>
         <plugins>
             <!-- region Established the java version defined in the properties' section for every scope (compatible with newer java versions) -->
             <plugin>

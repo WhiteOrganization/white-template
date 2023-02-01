@@ -1,63 +1,108 @@
 package org.white_sdev.templates.white_template.controller;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.white_sdev.templates.white_template.model.User;
+import org.white_sdev.white_seleniumframework.framework.SeleniumJupiterScenario;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+/*
+ * Documentation sample: https://www.arhohuttunen.com/spring-boot-integration-testing/
+ */
+@lombok.extern.slf4j.Slf4j
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+//@ActiveProfiles("test")
+@org.springframework.transaction.annotation.Transactional
 class MainControllerIntegrationTests {
 	
 	@Autowired
 	MainController mainController;
+	@Autowired
+	private MockMvc mockMvc;
+	// Use this for end-to-end tests
+//	@Autowired
+//	private WebTestClient webClient;
 	
+	ObjectMapper javaToJsonMapper = new ObjectMapper();
+	
+	//region Before & After
 	@BeforeAll
-	public static void beforeAll(){
+	public static void beforeAll() {
 		System.setProperty("java.awt.headless", "false");
 	}
 	
+	@BeforeEach
+	public void beforeEach(TestInfo testInfo) {
+		String displayName = testInfo.getDisplayName();
+		org.slf4j.MDC.put("testId", displayName);
+		log.info("{}Test Name: {} {}", SeleniumJupiterScenario.ScenarioUtils.getLogBreak(), displayName, SeleniumJupiterScenario.ScenarioUtils.getLogBreak());
+	}
+	
+	@AfterEach
+	public void afterEach() {
+		String logID = "::afterEach([testInfo]): ";
+		log.trace("{}Start ", logID);
+		log.info("{}{}", logID, SeleniumJupiterScenario.ScenarioUtils.getLogBreak());
+		org.slf4j.MDC.remove("testId");
+	}
+	
+	//endregion Before & After
+	
+	String moduleSegment = "/api";
+	
 	@Test
+	@SneakyThrows
+//	@org.springframework.test.context.jdbc.Sql("/custom-scenario-set-up-inserts.sql")
 	public void customTest() {
-		//JUnit5 Assertions
-		assertNotNull(mainController);
 		
-		//AssertJ fluent assertions
+		//region Set-up
+		
+		//configuration check
 		assertThat(mainController)
-				.as("Spring initialization is configured and running Verification ")
+				.as("Spring initialization is configured and running Verification.")
 				.isNotNull()
 				.isInstanceOf(MainController.class);
 		
-		//region Set-up
 		List<User> initialUsers = mainController.getUsers();
-		User firstUser = initialUsers.get(0);
-		//endregion
-		
-		//Main call
-		mainController.users.remove(firstUser);
-		
-		//region Verifications
-		assertThat(initialUsers)
+		SoftAssertions soft = new SoftAssertions();
+		soft.assertThat(initialUsers) //This might not be required in this case.
 				.as("Initial users load (of 2) Verification")
 				.isNotNull()
 				.isNotEmpty()
 				.hasSize(2);
-		
-		List<User> finalUsers = mainController.getUsers();
-		assertThat(finalUsers)
-				.as("'Final user list has only 1 user and it is not the deleted one' Verification")
-				.isNotNull()
-				.isNotEmpty()
-				.doesNotContain(firstUser)
-				.hasSize(initialUsers.size()-1);
-		
+		User dummyUser = new User("dummy","dummy@decoy.com");
+		String jsonUser = javaToJsonMapper.writeValueAsString(dummyUser);
 		//endregion
 		
+		////region Execution
+		mockMvc.perform(post(moduleSegment+"/user")
+								.contentType(MediaType.APPLICATION_JSON)
+								.content(jsonUser))
+				.andExpect(status().isCreated());
 		
+		
+		List<User> finalUsers = mainController.getUsers();
+		
+		soft.assertThat(finalUsers)
+				.as("'Final user list has 1 extra user and it is the created one' Verification")
+				.isNotNull()
+				.isNotEmpty()
+				.contains(dummyUser)
+				.hasSize(initialUsers.size() + 1);
+		
+		//endregion Execution
 	}
 }

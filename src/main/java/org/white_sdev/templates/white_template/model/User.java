@@ -24,6 +24,7 @@ public class User {
         this.email = email;
     }
 
+    //region Object Overrides
     @Override
     public String toString() {
         return "[firstName:" + firstName + "],[email:" + email + "]";
@@ -44,12 +45,14 @@ public class User {
         hash = 67 * hash + Objects.hashCode(this.firstName);
         return hash;
     }
-
+    
+    //endregion Object Overrides
+    
     public static String[][] mapUsers(Collection<User> users){
         List<String[]> data = new ArrayList<>();
-        for(User user:users){
+        for(User user:users)
             data.add(new String[]{user.getFirstName(), user.getEmail()});
-        }
+        
         return data.toArray(new String[data.size()][]);
     }
 }
