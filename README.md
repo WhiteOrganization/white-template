@@ -19,16 +19,23 @@ The technologies the project is using.
 
 #### 2.1.1) Development environment
 - DataBase:			H2 (Previously using OracleDB)
-- Java version: 	`1.17`
-- Maven
+- JDK version: 	`1.17`
+- [Maven](https://maven.apache.org/download.cgi)
+- [Docker](https://www.docker.com/products/docker-desktop/)
 
 #### 2.1.2) Project Dependencies
 This library uses:
 - **lombok** to log errors and general logs.
     - **Slf4j**
-- **PropertiesManager** to obtain the default properties values.
 - **Spring boot**
-- **Selenium-Jupiter**
+  - **Spring 6**
+    - **Reactive Spring Webflux WebClient**. for Reactive REST Calls.
+    - Spring > **Jackson**
+  - **JUnit5**
+    - **Selenium-Jupiter**
+- **White_SeleniumFramework**. Utilities and Base Automation Scenario
+- **Hibernate**
+- **H2 DataBase**
 
 
 ### 2.2) Configuration Steps
