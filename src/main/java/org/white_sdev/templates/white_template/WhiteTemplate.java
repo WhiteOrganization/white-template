@@ -14,7 +14,6 @@ import javax.swing.*;
 /**
  * Main class of the application
  *
- * @author <a href="mailto:obed.vazquez@gmail.com>Obed Vazquez</a>
  * @since 2022-Aug-01
  */
 @SpringBootApplication
@@ -28,27 +27,28 @@ public class WhiteTemplate {
 	 * <a href="https://www.oracle.com/java/technologies/jpl1-building-applications.html#class"> more information</a>.
 	 *
 	 * @param args {@link String} Arguments provided by the caller of the application (Often omitted)
-	 * @author <a href="mailto:obed.vazquez@gmail.com>Obed Vazquez</a>
 	 * @since 2022/08/01
 	 */
 	public static void main(String[] args) {
 		String logID = "::main(args[]): ";
 		log.trace("{}Start", logID);
 		try {
-//			launchWebApplication(args);
-			ApplicationContext deleteMe = launchWebAndDesktopApplication(args);
+			launchWebApplication(args);
+//			launchWebAndDesktopApplication(args);
 			
-			log.trace("{}Finish. ApplicationContext: {}", logID, deleteMe);
+			log.trace("{}Finish", logID);
 			
 		} catch (Exception e) {
 			throw new RuntimeException("Error during execution of the main application process.", e);
 		}
 	}
 	
+	@SuppressWarnings("all")
 	public static ApplicationContext launchWebApplication(String[] args) {
 		return SpringApplication.run(WhiteTemplate.class, args);
 	}
 	
+	@SuppressWarnings("unused")
 	@SneakyThrows
 	public static ApplicationContext launchWebAndDesktopApplication(String[] args) {
 		ApplicationContext springApplicationContext = new SpringApplicationBuilder(WhiteTemplate.class)
@@ -73,6 +73,7 @@ public class WhiteTemplate {
 		});
 	}
 	
+	@SuppressWarnings("unused")
 	public static void setWindowsLookAndFeel() throws Exception {
 		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
 			if ("Windows".equals(info.getName())) {

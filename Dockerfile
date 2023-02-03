@@ -1,13 +1,14 @@
-FROM openjdk:17-jdk-alpine
+FROM openjdk:17-jdk-slim
 
-ARG JAR_FILE_PATH=target/
-ARG JAR_FILE=white-template-0.1-SNAPSHOT-jar-with-dependencies.jar
-ARG DOCKER_JAR=${JAR_FILE}
 
-#COPY "./target/white-template-0.1-SNAPSHOT-jar-with-dependencies.jar" "app.jar"
-ADD ${JAR_FILE_PATH}${JAR_FILE} ${DOCKER_JAR}
+#ENV JAR_FILE_PATH=target/
+#ENV JAR_FILE=white-template-0.1-SNAPSHOT-with-dependencies.jar
+#ENV DOCKER_JAR=${JAR_FILE}
+
+#COPY "./target/white-template-0.1-SNAPSHOT-with-dependencies.jar" "app.jar"
+ADD target/white-template-0.1-SNAPSHOT-with-dependencies.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "${DOCKER_JAR}"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
 
 
