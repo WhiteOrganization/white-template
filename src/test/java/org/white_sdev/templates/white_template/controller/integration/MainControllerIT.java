@@ -1,4 +1,4 @@
-package org.white_sdev.templates.white_template.controller;
+package org.white_sdev.templates.white_template.controller.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.white_sdev.templates.white_template.controller.MainController;
 import org.white_sdev.templates.white_template.model.User;
 import org.white_sdev.white_seleniumframework.framework.SeleniumJupiterScenario;
 
@@ -26,11 +27,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 //@ActiveProfiles("test")
 @org.springframework.transaction.annotation.Transactional
-class MainControllerIntegrationTests {
+class MainControllerIT { //failsafe detects names starts with IT, or ends with IT or ITCase
 	
 	@Autowired
 	MainController mainController;
 	@Autowired
+	@SuppressWarnings("unused")
 	private MockMvc mockMvc;
 	// Use this for end-to-end tests
 //	@Autowired

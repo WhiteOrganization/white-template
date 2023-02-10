@@ -36,7 +36,7 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPacka
 public class MainController {
 	
 	@Setter
-	UserFrame view;
+	public UserFrame view;
 	
 	public void loadUsers() {
 		String logID = "loadUsers()::";
@@ -52,6 +52,7 @@ public class MainController {
 	}
 	
 	@PostMapping("/user")
+	@SuppressWarnings("unused")
 	public ResponseEntity<Object> newUser(@RequestBody User user) {
 		String logID = "::createUser(user): ";
 		log.info("{}Creating User - user:{}", logID, user);
@@ -64,6 +65,7 @@ public class MainController {
 	}
 	
 	@GetMapping("/tests")
+	@SuppressWarnings("unused")
 	public void executeTests() {
 		String logID="::executeTests([]): ";
 		log.trace("{}Start ", logID);

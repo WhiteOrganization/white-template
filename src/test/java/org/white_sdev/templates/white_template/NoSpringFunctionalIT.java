@@ -14,7 +14,7 @@ import org.white_sdev.white_seleniumframework.framework.SeleniumJupiterScenario;
 import java.time.Duration;
 
 @Slf4j
-public class NoSpringTests extends SeleniumJupiterScenario {
+public class NoSpringFunctionalIT extends SeleniumJupiterScenario {
 	
 	//region SeleniumJupiter Extension
 	@SuppressWarnings("all")

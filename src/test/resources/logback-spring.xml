@@ -3,7 +3,7 @@
     <!-- this is supposed to include the configuration Spring produces after processing application.properties [not working] -->
     <include resource="org/springframework/boot/logging/logback/base.xml" />
 
-    <!-- this will allow this file to read the properties indicated on the application.properties Spring file -->
+<!--     this will allow this file to read the properties indicated on the application.properties Spring file-->
 <!--    <property file="application.properties"/>-->
     <springProperty scope="context" name="logging.file.path" source="logging.file.path"/>
     <springProperty scope="context" name="logging.pattern.console" source="logging.pattern.console"/>
