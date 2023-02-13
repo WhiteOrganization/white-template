@@ -27,7 +27,7 @@
         <!-- region Configure Java version & Main full package and class name -->
         <!-- WARNING: add release scope if 1.9 and older versions are used at build/plugins/plugin/[maven-compiler-plugin]/configuration-->
         <java.version>19</java.version>
-        <main.class>${project.groupId}.WhiteTemplate</main.class>
+        <main.class>${project.groupId}.white_template.WhiteTemplate</main.class>
         <!--endregion-->
         <!-- region General configurations of the project -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -168,24 +168,15 @@
 <!--            &lt;!&ndash;<scope>compile</scope>-->
 <!--            <type>jar</type>&ndash;&gt;-->
 <!--        </dependency>-->
+        <!--endregion Hibernate-->
 
-        <!-- Hibernate Entities Validations @NotBlank (manually added )-->
-<!--        <dependency>-->
-<!--            <groupId>jakarta.validation</groupId>-->
-<!--            <artifactId>jakarta.validation-api</artifactId>-->
-<!--&lt;!&ndash;            <version>3.0.0</version>&ndash;&gt;-->
-<!--            <type>jar</type>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>javax.validation</groupId>-->
-<!--            <artifactId>validation-api</artifactId>-->
-<!--            <type>jar</type>-->
-<!--        </dependency>-->
+        <!-- region Spring boot validations -->
+        <!-- Contains jakarta.validation-api Hibernate Entities Validations @NotBlank -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <!--endregion Hibernate-->
+        <!-- endregion Spring boot validations -->
 
         <!-- region Oracle. In case you are using an Oracle database-->
         <!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 -->
@@ -245,6 +236,12 @@
         <!-- endregion -->
 
         <!-- region Testing -->
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite-engine</artifactId>
+            <version>1.9.2</version>
+        </dependency>
 
         <!-- region Automation Functional Testing -->
 
@@ -416,6 +413,8 @@
         </dependency>
         <!-- endregion FlatLaf - Flat swing Look and Feel -->
 
+        <!-- region IntelliJ plugins dependencies -->
+        <!-- these will solve the issues with IntelliJ plugin identification problems -->
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
@@ -431,8 +430,18 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.4.2</version>
+        </dependency>
+        <!-- endregion IntelliJ plugins dependencies -->
+
     </dependencies>
 
+    <!-- region disable DockLint -->
+    <!-- Eliminates the JavaDoc problems in later versions when you have problems in the documentation -->
     <profiles>
         <profile>
             <id>disable-java8-doclint</id>
@@ -444,6 +453,7 @@
             </properties>
         </profile>
     </profiles>
+    <!-- endregion disable DockLint -->
 
     <build>
 <!--        <finalName>${project.artifactId}</finalName>-->
@@ -456,6 +466,7 @@
             </resource>
         </resources>
         <!--endregion  -->
+        <!-- compiles the src test with the rest of the code, so it will be able to identify tests classes from the src/java section -->
         <testOutputDirectory>target/classes</testOutputDirectory>
         <plugins>
             <!-- region Established the java version defined in the properties' section for every scope (compatible with newer java versions) -->

@@ -27,7 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.white_sdev.templates.white_template.model.User;
 import org.white_sdev.templates.white_template.view.UserFrame;
 
-import static org.junit.platform.engine.discovery.ClassNameFilter.includeClassNamePatterns;
+
+import static org.junit.platform.engine.discovery.ClassNameFilter.*;
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
 
 @Slf4j
@@ -90,11 +91,10 @@ public class MainController {
 		final LauncherDiscoveryRequest request =
 				LauncherDiscoveryRequestBuilder.request()
 						.selectors(
-								selectPackage("org.white_sdev.templates.white_template"),
-								selectPackage("org.white_sdev.templates.white_template.controller")
+								selectPackage("org.white_sdev.templates.white_template")
 						)
 						.filters(
-								includeClassNamePatterns(ClassNameFilter.STANDARD_INCLUDE_PATTERN)
+								includeClassNamePatterns("("+ClassNameFilter.STANDARD_INCLUDE_PATTERN+")||^(IT.*|.+[.$]IT.*|.*ITs?)$")
 						)
 						.build();
 		

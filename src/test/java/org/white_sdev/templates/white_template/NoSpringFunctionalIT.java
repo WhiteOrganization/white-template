@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.white_sdev.templates.white_template.pom.CalculatorPage;
 import org.white_sdev.white_seleniumframework.framework.SeleniumJupiterScenario;
 
 import java.time.Duration;
@@ -26,18 +27,20 @@ public class NoSpringFunctionalIT extends SeleniumJupiterScenario {
 	}
 	//endregion SeleniumJupiter Extension
 	
+	CalculatorPage calculatorPage;
+	
 	//region Tests
 	@Test
 	@DisplayName("Basic calculator operations Functional Test")
 	@EnabledIfDriverUrlOnline("https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html")
 	void calculatorTest() {
-		driver.get("https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html");
+		calculatorPage= new CalculatorPage(driver).openPage();
 		
 		// 1 + 3
-		driver.findElement(By.xpath("//span[text()='1']")).click();
-		driver.findElement(By.xpath("//span[text()='+']")).click();
-		driver.findElement(By.xpath("//span[text()='3']")).click();
-		driver.findElement(By.xpath("//span[text()='=']")).click();
+		calculatorPage.clickNumber(1);
+		calculatorPage.plus();
+		calculatorPage.clickNumber(3);
+		calculatorPage.equals();
 		
 		// ... should be 4, wait for it
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
