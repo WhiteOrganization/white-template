@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- this is supposed to include the configuration Spring produces after processing application.properties [not working] -->
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+
+<!--     this will allow this file to read the properties indicated on the application.properties Spring file-->
+<!--    <property file="application.properties"/>-->
+    <springProperty scope="context" name="logging.file.path" source="logging.file.path"/>
+    <springProperty scope="context" name="logging.pattern.console" source="logging.pattern.console"/>
+    <springProperty scope="context" name="logging.level.application.base" source="logging.level.application.base"/>
+    <springProperty scope="context" name="application.package" source="application.package"/>
+    <springProperty scope="context" name="logging.level.root" source="logging.level.root"/>
+
+    <appender name="FILE" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <!-- This will be replaced on every test (or custom) with:
+                `org.slf4j.MDC.put("testId", displayName);` -->
+            <key>testId</key>
+            <defaultValue>Application</defaultValue>
+        </discriminator>
+
+        <sift>
+            <appender name="TC-${testId}" class="ch.qos.logback.core.FileAppender">
+                <file>${logging.file.path}/${testId}.log</file>
+                <!--                <file>logs/log_${id}.log</file>-->
+                <maxHistory>0</maxHistory>
+                <append>false</append>
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <pattern>${logging.pattern.file}</pattern>
+                </layout>
+            </appender>
+        </sift>
+    </appender>
+
+    <appender name="STDOUT" target="System.out" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${logging.pattern.console}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${logging.level.application.base}</level>
+        </filter>
+    </appender>
+
+    <logger name="${application.package}" level="${logging.level.root}" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+</configuration>

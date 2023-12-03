@@ -1,4 +1,4 @@
-package org.white_sdev.templates.white_template.controller.functional;
+package org.white_sdev.templates.white_template.functional;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import lombok.SneakyThrows;
@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.white_sdev.templates.white_template.controller.MainController;
 import org.white_sdev.templates.white_template.model.User;
-import org.white_sdev.templates.white_template.pom.IndexPage;
+import org.white_sdev.templates.white_template.functional.pom.IndexPage;
 import org.white_sdev.white_seleniumframework.framework.SeleniumJupiterScenario;
 
 import java.time.Duration;
@@ -42,6 +42,7 @@ public class MainControllerFunctionalIT extends SeleniumJupiterScenario {
 	@BeforeAll
 	public static void beforeAll(){
 		System.setProperty("java.awt.headless", "false");
+		System.setProperty("webdriver.http.factory", "jdk-http-client");
 	}
 	
 	//region CRUD User Test

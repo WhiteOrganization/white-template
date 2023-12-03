@@ -1,4 +1,4 @@
-package org.white_sdev.templates.white_template.pom;
+package org.white_sdev.templates.white_template.functional.pom;
 
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Wait;
 import org.white_sdev.templates.white_template.model.User;
 import org.white_sdev.white_seleniumframework.framework.WebDriverUtils;
 

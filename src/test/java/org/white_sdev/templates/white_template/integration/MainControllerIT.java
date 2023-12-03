@@ -1,4 +1,4 @@
-package org.white_sdev.templates.white_template.controller.integration;
+package org.white_sdev.templates.white_template.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -7,6 +7,8 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.white_sdev.templates.white_template.controller.MainController;
@@ -23,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Documentation sample: https://www.arhohuttunen.com/spring-boot-integration-testing/
  */
 @lombok.extern.slf4j.Slf4j
+//@PropertySource("classpath:application.properties")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 //@ActiveProfiles("test")
@@ -68,8 +71,9 @@ class MainControllerIT { //failsafe detects names starts with IT, or ends with I
 	@Test
 	@SneakyThrows
 //	@org.springframework.test.context.jdbc.Sql("/custom-scenario-set-up-inserts.sql")
-	public void customTest() {
-		
+	public void customTest(@LocalServerPort int port) {
+		String logID="::customTest([port]): ";
+		log.trace("{}Start - port:{}", logID, port);
 		//region Set-up
 		
 		//configuration check

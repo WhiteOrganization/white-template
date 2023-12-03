@@ -70,7 +70,7 @@ public class MainController {
 	public void executeTests() {
 		String logID="::executeTests([]): ";
 		log.trace("{}Start ", logID);
-		executeTestsWithLauncher();
+		executeTestsWithJUnitLauncher();
 	}
 	
 	/**
@@ -83,29 +83,32 @@ public class MainController {
 	 */
 	/*
 	 * More information at: https://junit.org/junit5/docs/current/user-guide/#launcher-api
+	 * Specification: https://junit.org/junit5/docs/5.0.0/api/org/junit/platform/launcher/core/LauncherDiscoveryRequestBuilder.html
 	 * Some examples: https://www.baeldung.com/junit-tests-run-programmatically-from-java
 	 */
-	private static void executeTestsWithLauncher(){
+	public static void executeTestsWithJUnitLauncher(){
 		String logID="::executeTestsWithLauncher([]): ";
 		log.trace("{}Start ", logID);
 		final LauncherDiscoveryRequest request =
 				LauncherDiscoveryRequestBuilder.request()
-						.selectors(
-								selectPackage("org.white_sdev.templates.white_template")
-						)
-						.filters(
-								includeClassNamePatterns("("+ClassNameFilter.STANDARD_INCLUDE_PATTERN+")||^(IT.*|.+[.$]IT.*|.*ITs?)$")
-						)
+						.selectors( selectPackage("org.white_sdev") )
+//						.selectors( selectPackage("org.white_sdev.templates.white_template") )
+						.filters( includeClassNamePatterns("("+ClassNameFilter.STANDARD_INCLUDE_PATTERN+")|^(IT.*|.+[.$]IT.*|.*ITs?)$") )
 						.build();
 		
 		final Launcher launcher = LauncherFactory.create();
-		final SummaryGeneratingListener listener = new SummaryGeneratingListener();
 		
+		final SummaryGeneratingListener listener = new SummaryGeneratingListener();
 		launcher.registerTestExecutionListeners(listener);
+		
 		launcher.execute(request);
 		
-		TestExecutionSummary summary = listener.getSummary();
-		
+		printTestsResults(listener.getSummary());
+	}
+	
+	public static void printTestsResults(TestExecutionSummary summary){
+		String logID="::printTestsResults([summary]): ";
+		log.trace("{}Start ", logID);
 		log.info("{}********************************", logID);
 		log.info("{}            REPORT:", logID);
 		log.info("{}Total Tests Found: {}", logID, summary.getTestsFoundCount());

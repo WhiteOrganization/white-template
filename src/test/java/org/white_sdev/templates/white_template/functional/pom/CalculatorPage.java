@@ -1,4 +1,4 @@
-package org.white_sdev.templates.white_template.pom;
+package org.white_sdev.templates.white_template.functional.pom;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

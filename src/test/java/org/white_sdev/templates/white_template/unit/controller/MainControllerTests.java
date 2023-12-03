@@ -1,4 +1,4 @@
-package org.white_sdev.templates.white_template.controller.unit;
+package org.white_sdev.templates.white_template.unit.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

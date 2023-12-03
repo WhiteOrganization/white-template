@@ -3,13 +3,26 @@ package org.white_sdev.templates.white_template;
 import com.formdev.flatlaf.FlatDarkLaf;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.platform.engine.discovery.ClassNameFilter;
+import org.junit.platform.launcher.Launcher;
+import org.junit.platform.launcher.LauncherDiscoveryRequest;
+import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
+import org.junit.platform.launcher.core.LauncherFactory;
+import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
+import org.junit.platform.launcher.listeners.TestExecutionSummary;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
+import org.white_sdev.templates.white_template.controller.MainController;
 import org.white_sdev.templates.white_template.view.UserFrame;
 
 import javax.swing.*;
+import java.time.Duration;
+import java.time.Instant;
+
+import static org.junit.platform.engine.discovery.ClassNameFilter.includeClassNamePatterns;
+import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
 
 /**
  * Main class of the application
@@ -33,8 +46,10 @@ public class WhiteTemplate {
 		String logID = "::main(args[]): ";
 		log.trace("{}Start", logID);
 		try {
-			launchWebApplication(args);
+//			launchWebApplication(args);
 //			launchWebAndDesktopApplication(args);
+			
+			executeTestsWithJUnitLauncher();System.exit(0);
 			
 			log.trace("{}Finish", logID);
 			
@@ -88,4 +103,59 @@ public class WhiteTemplate {
 		log.trace("{}Start Installing FlatDarkLookAndFeel", logID);
 		UIManager.setLookAndFeel(new FlatDarkLaf());
 	}
+	
+	
+	/**
+	 * Execute tests detected on the specified packages.
+	 * SRC test execution requires
+	 * <code>
+	 *             <testOutputDirectory>target/classes</testOutputDirectory>
+	 * </code>
+	 * in the build section to detect the tests classes
+	 */
+	/*
+	 * More information at: https://junit.org/junit5/docs/current/user-guide/#launcher-api
+	 * Specification: https://junit.org/junit5/docs/5.0.0/api/org/junit/platform/launcher/core/LauncherDiscoveryRequestBuilder.html
+	 * Some examples: https://www.baeldung.com/junit-tests-run-programmatically-from-java
+	 */
+	public static void executeTestsWithJUnitLauncher(){
+		String logID="::executeTestsWithLauncher([]): ";
+		log.trace("{}Start ", logID);
+		final LauncherDiscoveryRequest request =
+				LauncherDiscoveryRequestBuilder.request()
+						.selectors( selectPackage("org.white_sdev.templates.white_template") )
+						.filters( includeClassNamePatterns("("+ ClassNameFilter.STANDARD_INCLUDE_PATTERN+")||^(IT.*|.+[.$]IT.*|.*ITs?)$") )
+						.build();
+		
+		final Launcher launcher = LauncherFactory.create();
+		
+		final SummaryGeneratingListener listener = new SummaryGeneratingListener();
+		launcher.registerTestExecutionListeners(listener);
+		
+		launcher.execute(request);
+		
+		printTestsResults(listener.getSummary());
+	}
+	
+	public static void printTestsResults(TestExecutionSummary summary){
+		String logID="::printTestsResults([summary]): ";
+		log.trace("{}Start ", logID);
+		log.info("{}********************************", logID);
+		log.info("{}            REPORT:", logID);
+		log.info("{}Total Tests Found: {}", logID, summary.getTestsFoundCount());
+		log.info("{}Total Tests Succeeded: {}", logID, summary.getTestsSucceededCount());
+		log.info("{}Total Tests Failed: {}", logID, summary.getTotalFailureCount());
+		log.info("{}Tests Skipped: {}", logID, summary.getTestsSkippedCount());
+		log.info("{}Tests Aborted: {}", logID, summary.getTestsAbortedCount());
+		log.info("{}Time Elapsed: {}", logID, Duration.between(Instant.ofEpochMilli(summary.getTimeStarted()), Instant.ofEpochMilli(summary.getTimeFinished())).toString()
+				.substring(2)
+				.replaceAll("(\\d[HMS])(?!$)", "$1 ")
+				.toLowerCase());
+		log.info("{}********************************", logID);
+		
+		
+		java.util.List<TestExecutionSummary.Failure> failures = summary.getFailures();
+		failures.forEach(failure -> log.error(logID+"Failure", failure.getException()));
+	}
+	
 }
