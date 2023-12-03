@@ -1,0 +1,27 @@
+# This file is not required if using the maven kubernetes-maven-plugin
+#******************************************************************************************
+# If you want to manually execute this file:
+# 1) Disable kubernetes-maven-plugin
+# 2) Rename this file to `Dockerfile` (remove '_bak')
+# 3) Execute to download [(and CREATE)?] the image:
+#       docker build -t "white-template-docker" .
+
+
+# For docker to RUN the container (https://docs.docker.com/language/nodejs/run-containers/)
+#       docker run --name white-template-docker -p 9090:8080 white-template-docker:latest
+
+# OR
+#docker run -it -p 8080:8080 white-template-docker:latest
+#******************************************************************************************
+
+
+FROM openjdk:17-jdk-slim
+
+#ENV JAR_FILE_PATH=target/
+#ENV JAR_FILE=white-template-0.1-SNAPSHOT-with-dependencies.jar
+#ENV DOCKER_JAR=${JAR_FILE}
+
+#COPY "./target/white-template-0.1-SNAPSHOT-with-dependencies.jar" "app.jar"
+ADD target/white-template-0.1-SNAPSHOT-with-dependencies.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]

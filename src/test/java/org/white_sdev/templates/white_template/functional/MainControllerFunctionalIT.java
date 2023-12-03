@@ -1,4 +1,4 @@
-package org.white_sdev.templates.white_template.controller;
+package org.white_sdev.templates.white_template.functional;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import lombok.SneakyThrows;
@@ -10,8 +10,9 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.white_sdev.templates.white_template.controller.MainController;
 import org.white_sdev.templates.white_template.model.User;
-import org.white_sdev.templates.white_template.pom.IndexPage;
+import org.white_sdev.templates.white_template.functional.pom.IndexPage;
 import org.white_sdev.white_seleniumframework.framework.SeleniumJupiterScenario;
 
 import java.time.Duration;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @lombok.extern.slf4j.Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MainControllerFunctionalTests extends SeleniumJupiterScenario {
+public class MainControllerFunctionalIT extends SeleniumJupiterScenario {
 	
 	//region SeleniumJupiter Extension
 	@SuppressWarnings("all")
@@ -41,6 +42,7 @@ public class MainControllerFunctionalTests extends SeleniumJupiterScenario {
 	@BeforeAll
 	public static void beforeAll(){
 		System.setProperty("java.awt.headless", "false");
+		System.setProperty("webdriver.http.factory", "jdk-http-client");
 	}
 	
 	//region CRUD User Test
@@ -63,7 +65,7 @@ public class MainControllerFunctionalTests extends SeleniumJupiterScenario {
 			//region Setup
 			IndexPage indexPage = new IndexPage(driver).openPage(localPort);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-			User user = new User("baz" + (++MainControllerFunctionalTests.userCount), "baz@zinga.com");
+			User user = new User("baz" + (++MainControllerFunctionalIT.userCount), "baz@zinga.com");
 			//endregion Setup
 			
 			//region Execution

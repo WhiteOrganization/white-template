@@ -26,14 +26,16 @@
     <properties>
         <!-- region Configure Java version & Main full package and class name -->
         <!-- WARNING: add release scope if 1.9 and older versions are used at build/plugins/plugin/[maven-compiler-plugin]/configuration-->
-        <java.version>17</java.version>
-        <main.class>org.white_sdev.templates.white_template.WhiteTemplate</main.class>
+        <java.version>19</java.version>
+        <main.class>${project.groupId}.white_template.WhiteTemplate</main.class>
         <!--endregion-->
         <!-- region General configurations of the project -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <!-- In case the compiling device doesn't have docker installed you can create the docker img with Jib -->
+<!--        <jkube.build.strategy>jib</jkube.build.strategy>-->
         <!-- endregion General configurations of the project -->
         <!-- region CREDENTIALS of the H2 Database to be created AND possibly used to connect if spring is configured -->
         <!-- you can edit these credentials and if H2 is configured these will be used to generate the database -->
@@ -43,6 +45,7 @@
         <!--endregion-->
         <junit.jupiter.version>5.9.2</junit.jupiter.version>
         <junit.platform.version>1.3.2</junit.platform.version>
+        <surefire.failsafe.plugin.version>3.0.0-M8</surefire.failsafe.plugin.version>
         <logs.path>${project.build.directory}/test-reports/logs</logs.path>
     </properties>
 
@@ -82,59 +85,6 @@
         </dependency>
         <!--endregion Controller-->
 
-        <!-- region Spring boot testing -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-<!--            <scope>test</scope>-->
-            <exclusions>
-                <!-- when using docker -->
-                <!--                <exclusion>-->
-                <!--                    <groupId>org.junit.vintage</groupId>-->
-                <!--                    <artifactId>junit-vintage-engine</artifactId>-->
-                <!--                </exclusion>-->
-                <exclusion>
-                    <groupId>org.assertj</groupId>
-                    <artifactId>assertj-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- region UnitTesting -->
-
-        <!-- region AssertJ -->
-        <!-- spring-boot-test is including it, but scope should not be limited to test for main to execute tests -->
-        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.23.1</version>
-            <!--            <scope>test</scope>-->
-        </dependency>
-        <!-- endregion AssertJ -->
-
-        <!-- region JUnit5 -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.9.0</version>
-<!--            <scope>test</scope>-->
-        </dependency>
-        <!-- endregion JUnit5 -->
-
-        <!-- region Mockito -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>4.10.0</version>
-<!--            <scope>test</scope>-->
-        </dependency>
-        <!-- endregion Mockito -->
-
-        <!-- endregion testing -->
-
-        <!-- endregion Spring boot testing -->
-
         <!-- region SpringBootPersistence -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -149,24 +99,15 @@
 <!--            &lt;!&ndash;<scope>compile</scope>-->
 <!--            <type>jar</type>&ndash;&gt;-->
 <!--        </dependency>-->
+        <!--endregion Hibernate-->
 
-        <!-- Hibernate Entities Validations @NotBlank (manually added )-->
-<!--        <dependency>-->
-<!--            <groupId>jakarta.validation</groupId>-->
-<!--            <artifactId>jakarta.validation-api</artifactId>-->
-<!--&lt;!&ndash;            <version>3.0.0</version>&ndash;&gt;-->
-<!--            <type>jar</type>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>javax.validation</groupId>-->
-<!--            <artifactId>validation-api</artifactId>-->
-<!--            <type>jar</type>-->
-<!--        </dependency>-->
+        <!-- region Spring boot validations -->
+        <!-- Contains jakarta.validation-api Hibernate Entities Validations @NotBlank -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <!--endregion Hibernate-->
+        <!-- endregion Spring boot validations -->
 
         <!-- region Oracle. In case you are using an Oracle database-->
         <!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 -->
@@ -202,17 +143,47 @@
 
         <!-- endregion Rest Calls -->
 
+        <!-- region Spring boot testing -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <!--            <scope>test</scope>-->
+            <exclusions>
+                <!-- when using docker -->
+                <!--                <exclusion>-->
+                <!--                    <groupId>org.junit.vintage</groupId>-->
+                <!--                    <artifactId>junit-vintage-engine</artifactId>-->
+                <!--                </exclusion>-->
+                <!--                <exclusion>-->
+                <!--                    <groupId>org.assertj</groupId>-->
+                <!--                    <artifactId>assertj-core</artifactId>-->
+                <!--                </exclusion>-->
+                <!--                &lt;!&ndash;remove test scope for src test execution &ndash;&gt;-->
+                <!--                <exclusion>-->
+                <!--                    <groupId>org.junit.jupiter</groupId>-->
+                <!--                    <artifactId>junit-jupiter</artifactId>-->
+                <!--                </exclusion>-->
+                <!--                <exclusion>-->
+                <!--                    <groupId>org.mockito</groupId>-->
+                <!--                    <artifactId>mockito-core</artifactId>-->
+                <!--                </exclusion>-->
+            </exclusions>
+        </dependency>
 
-        <!--endregion Spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+        </dependency>
 
         <!-- region Logger Configuration -->
+        <!-- Lombok is commonly used for this -->
         <!-- logger guide https://gist.github.com/stykalin/8c77ad2a705eabddc2424eff0e99d1ec -->
         <!-- Spring Boot already has this library -->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.logging.log4j</groupId>-->
-<!--            <artifactId>log4j-slf4j-impl</artifactId>-->
-<!--            <version>2.17.2</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.logging.log4j</groupId>-->
+        <!--            <artifactId>log4j-slf4j-impl</artifactId>-->
+        <!--            <version>2.17.2</version>-->
+        <!--        </dependency>-->
         <!-- endregion -->
 
         <!-- region Lombok (Annotations) Configuration -->
@@ -220,12 +191,65 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
-            <type>jar</type>
+            <!-- (Not sure but) it will take the version from Spring boot -->
+                        <version>1.18.26</version>
+            <!--            <type>jar</type>-->
         </dependency>
         <!-- endregion -->
 
-        <!-- region Testing -->
+        <!-- region UnitTesting -->
+
+        <!-- region AssertJ -->
+        <!-- spring-boot-test is including it, but scope should not be limited to test for main to execute tests -->
+        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.24.2</version>
+            <!--            <scope>test</scope>-->
+        </dependency>
+        <!-- endregion AssertJ -->
+
+        <!-- region JUnit5 -->
+        <!-- Spring has this already for testing scope-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <!--            <scope>test</scope>-->
+            <!--            <exclusions>-->
+            <!--                <exclusion>-->
+            <!--                    <groupId>org.junit.jupiter</groupId>-->
+            <!--                    <artifactId>junit-jupiter-engine</artifactId>-->
+            <!--                </exclusion>-->
+            <!--            </exclusions>-->
+        </dependency>
+        <!-- endregion JUnit5 -->
+
+        <!-- region Mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.10.0</version>
+            <!--            <scope>test</scope>-->
+        </dependency>
+        <!-- endregion Mockito -->
+
+        <!-- endregion UnitTesting -->
+
+        <!-- endregion Spring boot testing -->
+
+
+        <!--endregion Spring boot -->
+
+
+        <!-- region Testing (No-Spring) -->
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite-engine</artifactId>
+            <version>1.9.2</version>
+        </dependency>
 
         <!-- region Automation Functional Testing -->
 
@@ -250,6 +274,28 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-simple</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit-jupiter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>htmlunit-driver</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-text</artifactId>
+                </exclusion>
+                <!--webdrivermanager-->
+<!--                <exclusion>-->
+<!--                    <groupId>com.google.guava</groupId>-->
+<!--                    <artifactId>guava</artifactId>-->
+<!--                </exclusion>-->
+
+                <exclusion>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <!-- endregion White_SeleniumFramework -->
@@ -258,7 +304,25 @@
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>RELEASE</version>
+            <version>5.3.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-http-jdk-client</artifactId>
+<!--            <version>4.8.1</version>-->
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
         </dependency>
 
         <!-- region HTTPClient5 -->
@@ -302,15 +366,6 @@
 
         <!-- endregion Selenium-Jupiter -->
 
-        <!-- region JUnit5 -->
-        <!-- white-selenium-framework is including it, add it if White_SeleniumFramework is removed -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.junit.jupiter</groupId>-->
-        <!--            <artifactId>junit-jupiter</artifactId>-->
-        <!--            <version>5.9.0</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
-        <!-- endregion JUnit5 -->
         <!--endregion White_SeleniumFramework + bonigarcia-webdriver-->
 
 
@@ -326,7 +381,7 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.jupiter.version}</version>
-            <scope>compile</scope>
+<!--            <scope>compile</scope>-->
         </dependency>
         <!-- endregion JUnit Jupiter Engine -->
 
@@ -372,7 +427,84 @@
         </dependency>
         <!-- endregion FlatLaf - Flat swing Look and Feel -->
 
+        <!-- region IntelliJ plugins dependencies -->
+        <!-- these will solve the issues with IntelliJ plugin identification problems -->
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${surefire.failsafe.plugin.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-failsafe-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>${surefire.failsafe.plugin.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.4.2</version>
+        </dependency>
+        <!-- endregion IntelliJ plugins dependencies -->
+
+        <!-- region No Spring Logging -->
+        <!-- region Lombok -->
+        <!-- Lombok is already being imported by `spring-boot-starter-parent` and the 3.0.0 version imports uses lombok version [org.projectlombok:lombok:1.18.26] -->
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+<!--        <dependency>-->
+<!--            <groupId>org.projectlombok</groupId>-->
+<!--            <artifactId>lombok</artifactId>-->
+<!--            <version>1.18.24</version>-->
+<!--            <type>jar</type>-->
+<!--        </dependency>-->
+        <!-- endregion Lombok -->
+
+        <!-- region JCL -->
+        <!-- hooks lombok with the Sl4fj Provider -->
+        <!-- https://mvnrepository.com/artifact/org.slf4j/jcl-over-slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>2.0.5</version>
+        </dependency>
+        <!-- endregion JCL -->
+
+        <!-- region Sl4fj Provider -->
+        <!-- https://www.slf4j.org/codes.html#noProviders -->
+        <!-- This is the one Spring uses -->
+        <!-- https://logback.qos.ch/manual/layouts.html -->
+        <!-- this will allow you to use logback-test.xml file -->
+        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+        <!-- requires slf4j-api & logback-core (Lombok includes it) -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.5</version>
+        </dependency>
+        <!-- endregion SL4fj Provider -->
+        <!-- region No Spring Logging -->
+
     </dependencies>
+
+    <!-- region disable DockLint -->
+    <!-- Eliminates the JavaDoc problems in later versions when you have problems in the documentation -->
+    <profiles>
+        <profile>
+            <id>disable-java8-doclint</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <properties>
+                <doclint>none</doclint>
+            </properties>
+        </profile>
+    </profiles>
+    <!-- endregion disable DockLint -->
 
     <build>
 <!--        <finalName>${project.artifactId}</finalName>-->
@@ -385,7 +517,8 @@
             </resource>
         </resources>
         <!--endregion  -->
-        <testOutputDirectory>target/classes</testOutputDirectory>
+        <!-- compiles the src test with the rest of the code, so it will be able to identify tests classes from the src/java section -->
+<!--        <testOutputDirectory>target/classes</testOutputDirectory>-->
         <plugins>
             <!-- region Established the java version defined in the properties' section for every scope (compatible with newer java versions) -->
             <plugin>
@@ -395,7 +528,7 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <!-- WARNING: add release scope for 1.9 and older versions -->
+                    <!-- WARNING: add release property for 1.9 and older versions -->
                     <release>${java.version}</release>
                 </configuration>
             </plugin>
@@ -404,6 +537,7 @@
             <!-- region Builds an *executable* JAR on package goal -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.4.2</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -425,25 +559,62 @@
             </plugin>
             <!-- endregion -->
 
-            <!-- region Forces the app to be executed when using `mvn package` -->
+            <!-- region Forces the app to be executed on a specific maven goal -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
                     <mainClass>${main.class}</mainClass>
-                    <!--                    <cleanupDaemonThreads>false</cleanupDaemonThreads>-->
                 </configuration>
                 <executions>
+                    <!-- region Package JAR execution -->
+                    <!-- you probably won't require to run your application like this (with an executable jar) if it is dockerized -->
+                    <!-- uncomment this if you stop using docker or truly require to run your application on the package phase -->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>java</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+                    <!-- endregion Package JAR execution -->
+
+                    <!-- region Docker execution -->
+                    <!-- The docker image execution depends on the docker image generation (kubernetes-maven-plugin) -->
                     <execution>
-                        <phase>package</phase>
+                        <id>docker-compose</id>
+                        <phase>verify</phase>
                         <goals>
-                            <goal>java</goal>
+                            <goal>exec</goal>
                         </goals>
+                        <configuration>
+                            <executable>docker-compose</executable>
+                            <arguments>
+                                <argument>--project-directory</argument>
+                                <argument>src\main\docker</argument>
+                                <argument>up</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                     <!-- endregion Docker execution -->
+
+                    <execution>
+                        <id>report</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>mvn</executable>
+                            <arguments>
+                                <argument>surefire-report:report-only</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <!-- endregion -->
+
+            <!-- endregion Forces the app to be executed on a specific maven goal -->
 
             <!-- region Spring boot configuration-->
             <!-- in case spring boot is being used-->
@@ -540,9 +711,38 @@
             </plugin>
             <!--endregion-->
 
-            <!-- region Maven is able to run JUnit5 Tests -->
+            <!-- region Maven is able to run JUnit5 Tests (surefire) -->
             <!-- This requires junit-jupiter-engine [in junit-jupiter] dependency! -->
             <!-- This will run everything that Starts or ends with Test[(Case)|s]{0-1}. -->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                <version>${surefire.failsafe.plugin.version}</version>-->
+<!--                <executions>-->
+<!--                    <execution><goals><goal>test</goal></goals></execution>-->
+<!--                </executions>-->
+<!--&lt;!&ndash;                <configuration>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <reportsDirectory>${logs.path}</reportsDirectory>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <redirectTestOutputToFile>true</redirectTestOutputToFile>&ndash;&gt;-->
+<!--&lt;!&ndash;                </configuration>&ndash;&gt;-->
+
+<!--                &lt;!&ndash; region Deprecated in 3.0.0-M4 &ndash;&gt;-->
+<!--                &lt;!&ndash; above M3 will get this on its own, but it will not let you know,-->
+<!--                    it will just throw a problem with org/apache/maven/surefire/booter/ForkedProcessEvent &ndash;&gt;-->
+<!--                <dependencies>-->
+<!--                    <dependency>-->
+<!--                        <groupId>org.junit.platform</groupId>-->
+<!--                        <artifactId>junit-platform-surefire-provider</artifactId>-->
+<!--                        <version>RELEASE</version>-->
+<!--                    </dependency>-->
+<!--                    <dependency>-->
+<!--                        <groupId>org.junit.jupiter</groupId>-->
+<!--                        <artifactId>junit-jupiter-engine</artifactId>-->
+<!--                        <version>RELEASE</version>-->
+<!--                    </dependency>-->
+<!--                </dependencies>-->
+<!--                &lt;!&ndash; endregion Deprecated in 3.0.0-M4 &ndash;&gt;-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -554,29 +754,51 @@
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <reportsDirectory>${logs.path}</reportsDirectory>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.platform</groupId>
-                        <artifactId>junit-platform-surefire-provider</artifactId>
-                        <version>${junit.platform.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.junit.jupiter</groupId>
-                        <artifactId>junit-jupiter-engine</artifactId>
-                        <version>${junit.jupiter.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
+            <!-- region surefire-report Generates an HTML report -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>3.0.0-M7</version>
+                <version>${surefire.failsafe.plugin.version}</version>
                 <configuration>
-                    <showSuccess>false</showSuccess>
+<!--                    <reportsDirectories>${logs.path}</reportsDirectories>-->
+                    <reportsDirectories>
+                        <reportsDirectory>${logs.path}</reportsDirectory>
+                    </reportsDirectories>
                 </configuration>
             </plugin>
+            <!-- endregion surefire-report Generates an HTML report -->
+
             <!-- endregion -->
+
+            <!-- region Maven runs Integration Tests -->
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${surefire.failsafe.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <reportsDirectory>${logs.path}</reportsDirectory>
+                </configuration>
+            </plugin>
+            <!-- endregion Maven runs Integration Tests -->
+
+            <!-- region Docker Generation -->
+            <!-- You won't require the Dockerfile to generate the docker image manually,
+                and you can just use `docker compose -[delete me]-project-directory src\main\docker up` to run the image -->
+            <plugin>
+                <groupId>org.eclipse.jkube</groupId>
+                <artifactId>kubernetes-maven-plugin</artifactId>
+                <version>1.10.1</version>
+            </plugin>
+            <!-- endregion Docker Generation -->
 
         </plugins>
     </build>

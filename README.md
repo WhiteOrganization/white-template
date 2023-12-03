@@ -10,7 +10,9 @@ Version: `0.1-SNAPSHOT`
 Detailed description of your app.
 
 ### 1.2) Disclosure
-Any required disclosures?
+_We hereby certify that, to the best of our knowledge, neither we nor any individual or entity with whom or wijt h which I have a significant working
+relationship have (has) received something of value from a commercial party related directly or
+indirectly to the subject of this project..._
 
 ## 2) How do I get set up? ###
 
@@ -18,21 +20,32 @@ Any required disclosures?
 The technologies the project is using.
 
 #### 2.1.1) Development environment
-- DataBase:			H2 (Previously using OracleDB)
-- Java version: 	`1.17`
-- Maven
+- DataBase:			                    `H2` (_embedded_)
+- [JDK](https://openjdk.org/) version: 	`1.17`
+- [Maven](https://maven.apache.org/download.cgi)
+- [Docker](https://www.docker.com/products/docker-desktop/)
 
 #### 2.1.2) Project Dependencies
 This library uses:
 - **lombok** to log errors and general logs.
     - **Slf4j**
-- **PropertiesManager** to obtain the default properties values.
 - **Spring boot**
-- **Selenium-Jupiter**
+  - **Spring 6**
+    - **Reactive Spring Web-flux WebClient**. for Reactive REST Calls.
+    - Spring > **Jackson**
+    - **JKube** A Kubernetes Maven plugin to generate Docker Images.
+  - **JUnit5**
+    - **Selenium-Jupiter**
+- **White_SeleniumFramework**. Utilities and Base Automation Scenario
+- **Hibernate**
+- **H2 DataBase**
 
 
 ### 2.2) Configuration Steps
-#### 2.2.1) Database configuration
+#### 2.2.1) Environment Configuration
+  You will require all the Development elements on your environment. 
+  An IDE with maven support is suggested for you to make any modifications to the code.
+#### 2.2.2) Database configuration
 
 You don't need to set up a DataBase for the project to connect to.
 There is an H2 database already embedded in the project but if you want to
@@ -46,13 +59,30 @@ you will need to specify the connection information in the `application.properti
 	password=	sa
 
 ## 3) How to Deploy?
-use [maven](https://spring.io/guides/gs/maven/) to compile and run the project.
+use [maven](https://spring.io/guides/gs/maven/) to compile ~~and run~~(_you can configure the auto launch of a desktop app_) the project.
 
-You can simply use the command to (_clean, build, test and_) run the project with a single command: 
+You can simply use this to (_clean, build, test and_) **`RUN`** the project with a single command: 
+    
+    mvn verify
 
+Maven is configured to create the docker image on the package goal, so you can crete the image using:
 
-	mvn package
+	mvn package k8s:build
+After that you can run the image (and project) by running the image in docker with
 
+    docker compose --project-directory src\main\docker up
+This will create a docker image and run the project.
+
+    mvn clean package k8s:build -e
+    docker compose --project-directory src\main\docker up
+    .
+
+Maven is also configured to run the Docker Image on its own on the **`VERIFY`** phase/goal 
+after the creation of the image on the package goal. Use this for as a quick go-to command: 
+    
+    mvn clean verify -DskipTests
+
+If the project is running correctly
 ## 4) What are the Contribution guidelines?
 
 #### 4.1) Writing tests.
