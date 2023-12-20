@@ -10,7 +10,8 @@ Version: `0.1-SNAPSHOT`
 Detailed description of your app.
 
 ### 1.2) Disclosure
-_We hereby certify that, to the best of our knowledge, neither we nor any individual or entity with whom or wijt h which I have a significant working
+_We hereby certify that, to the best of our knowledge,
+neither we nor any individual or entity with whom or which I have a significant working
 relationship have (has) received something of value from a commercial party related directly or
 indirectly to the subject of this project..._
 
@@ -43,12 +44,16 @@ This library uses:
 
 ### 2.2) Configuration Steps
 #### 2.2.1) Environment Configuration
-  You will require all the Development elements on your environment. 
-  An IDE with maven support is suggested for you to make any modifications to the code.
+_Please execute the `main-protection-win.bat` file in the root directory of the project
+to protect the main branch from being corrupted unintentionally._
+
+You will require all the Development elements in your environment.
+
+An IDE with maven support is suggested for you to make any modifications to the code.
 #### 2.2.2) Database configuration
 
 You don't need to set up a DataBase for the project to connect to.
-There is an H2 database already embedded in the project but if you want to
+There is an H2 database already embedded in the project, but if you want to
 you can configure a separate one and switch the database connection, 
 you will need to specify the connection information in the `application.properties` file:
 
@@ -65,10 +70,10 @@ You can simply use this to (_clean, build, test and_) **`RUN`** the project with
     
     mvn verify
 
-Maven is configured to create the docker image on the package goal, so you can crete the image using:
+Maven is configured to create the docker image on the package goal, so you can create the image using:
 
 	mvn package k8s:build
-After that you can run the image (and project) by running the image in docker with
+After that, you can run the image (and project) by running the image in docker with
 
     docker compose --project-directory src\main\docker up
 This will create a docker image and run the project.
