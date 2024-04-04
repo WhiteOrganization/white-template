@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.white_sdev.templates.white_template.controller.MainController;
-import org.white_sdev.templates.white_template.model.User;
+import org.white_sdev.templates.white_template.model.persistence.User;
 import org.white_sdev.white_seleniumframework.framework.SeleniumJupiterScenario;
 
 import java.util.List;
@@ -31,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@ActiveProfiles("test")
 @org.springframework.transaction.annotation.Transactional
 class MainControllerIT { //failsafe detects names starts with IT, or ends with IT or ITCase
-	
+
 	@Autowired
 	MainController mainController;
 	@Autowired
@@ -58,7 +57,7 @@ class MainControllerIT { //failsafe detects names starts with IT, or ends with I
 	
 	@AfterEach
 	public void afterEach() {
-		String logID = "::afterEach([testInfo]): ";
+		String logID = "::afterEach(testInfo): ";
 		log.trace("{}Start ", logID);
 		log.info("{}{}", logID, SeleniumJupiterScenario.ScenarioUtils.getLogBreak());
 		org.slf4j.MDC.remove("testId");
@@ -72,8 +71,8 @@ class MainControllerIT { //failsafe detects names starts with IT, or ends with I
 	@SneakyThrows
 //	@org.springframework.test.context.jdbc.Sql("/custom-scenario-set-up-inserts.sql")
 	public void customTest(@LocalServerPort int port) {
-		String logID="::customTest([port]): ";
-		log.trace("{}Start - port:{}", logID, port);
+		String logID="::customTest(port): ";
+		log.info("{}Start - port:{}", logID, port);
 		//region Set-up
 		
 		//configuration check

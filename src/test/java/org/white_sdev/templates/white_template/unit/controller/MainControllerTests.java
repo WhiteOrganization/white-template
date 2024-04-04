@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.white_sdev.templates.white_template.controller.MainController;
-import org.white_sdev.templates.white_template.model.User;
+import org.white_sdev.templates.white_template.model.persistence.User;
+import org.white_sdev.templates.white_template.repo.UserRepository;
 import org.white_sdev.templates.white_template.view.UserFrame;
 
 import java.util.List;
@@ -13,15 +14,21 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@Slf4j
+/**
+ * This Test is not hooked into Spring, so it won't recognize the `application.properties` properties.
+ * Instead, it will look for the logging properties at the `logback-test.xml` file.
+ */
 @ExtendWith(MockitoExtension.class)
+@Slf4j
 public class MainControllerTests { //surefire detects names that starts with Test, or ends with Test, Tests or TestCase
-	
+
+
 	@Test
 	public void getUsersTest(){
 		//region SetUp
 		//use a spy when you want the actual
-		MainController mainControllerSpy = spy(MainController.class);
+		UserRepository userRepositoryMock = mock(UserRepository.class);
+		MainController mainControllerSpy = spy(new MainController(userRepositoryMock));
 		//endregion
 		
 		//Main Call
@@ -30,15 +37,18 @@ public class MainControllerTests { //surefire detects names that starts with Tes
 		//region Validations
 		verify(mainControllerSpy).getUsersSet();
 		assertThat(users)
-				.as("Users has preloaded values Verification")
-				.isNotEmpty();
+				.as("Users has not preloaded values Verification")
+				.isEmpty();
 		//endregion Validations
 	}
 	
 	@Test
 	public void saveTest(){
+		String logID="::saveTest(): ";
+		log.info("{}Start", logID);
 		//region SetUp
-		MainController mainControllerSpy = spy(new MainController());
+		UserRepository userRepositoryMock = mock(UserRepository.class);
+		MainController mainControllerSpy = spy(new MainController(userRepositoryMock));
 		UserFrame viewMock = mock(UserFrame.class);
 		javax.swing.JTextField jTextFieldMock = new javax.swing.JTextField();
 		
@@ -64,9 +74,11 @@ public class MainControllerTests { //surefire detects names that starts with Tes
 		
 		//region Validations
 		verify(mainControllerSpy).create(user);//verify create() was called with that user
-		assertThat(mainControllerSpy.getUsers())
+		List<User> users= mainControllerSpy.getUsers();
+		log.info("{}Finish - users:{}", logID, users);
+		assertThat(users)
 				.as("Number of users didn't change verification.")
-				.isNotEmpty()
+//				.isNotEmpty()
 				.hasSameSizeAs(oldUsers);
 		//endregion Validations
 	}

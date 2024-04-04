@@ -2,16 +2,13 @@ package org.white_sdev.templates.white_template.functional;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.white_sdev.templates.white_template.controller.MainController;
-import org.white_sdev.templates.white_template.model.User;
+import org.white_sdev.templates.white_template.model.persistence.User;
 import org.white_sdev.templates.white_template.functional.pom.IndexPage;
 import org.white_sdev.white_seleniumframework.framework.SeleniumJupiterScenario;
 
@@ -33,7 +30,7 @@ public class MainControllerFunctionalIT extends SeleniumJupiterScenario {
 		return seleniumJupiter;
 	}
 	//endregion SeleniumJupiter Extension
-	
+
 	@LocalServerPort
 	protected int localPort;
 	
@@ -54,6 +51,7 @@ public class MainControllerFunctionalIT extends SeleniumJupiterScenario {
 //	@EnabledIfBrowserAvailable(Browser.CHROME)
 //	@EnabledIfDriverUrlOnline("http://localhost:8080")
 	@DisplayName("Register a dummy user Functional Test")
+	@Disabled //Impossible to work with headless from White_SeleniumFramework in this version.
 	@SneakyThrows
 	public void registerUser(TestInfo testInfo) {
 		String logID = "::registerUser([driver]): ";

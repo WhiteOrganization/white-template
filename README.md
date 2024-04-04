@@ -17,7 +17,7 @@ indirectly to the subject of this project..._
 
 ## 2) How do I get set up? ###
 
-### 2.1) Summary of set up
+### 2.1) Summary of setup
 The technologies the project is using.
 
 #### 2.1.1) Development environment
@@ -66,33 +66,34 @@ you will need to specify the connection information in the `application.properti
 ## 3) How to Deploy?
 use [maven](https://spring.io/guides/gs/maven/) to compile ~~and run~~(_you can configure the auto launch of a desktop app_) the project.
 
-You can simply use this to (_clean, build, test and_) **`RUN`** the project with a single command: 
+You can use this to (_clean, build, test and_) **`RUN`** the project with a single command: 
     
-    mvn verify
+    mvn install
 
-Maven is configured to create the docker image on the package goal, so you can create the image using:
+Maven is no longer configured to create the docker image on the package goal, so you can create the image using:
 
 	mvn package k8s:build
 After that, you can run the image (and project) by running the image in docker with
 
     docker compose --project-directory src\main\docker up
-This will create a docker image and run the project.
+This should create a docker image and run the project.
 
     mvn clean package k8s:build -e
     docker compose --project-directory src\main\docker up
     .
 
-Maven is also configured to run the Docker Image on its own on the **`VERIFY`** phase/goal 
-after the creation of the image on the package goal. Use this for as a quick go-to command: 
+Maven could be also configured to run the Docker Image on its own on the **`INSTALL`** phase/goal 
+after the creation of the image on the package goal.
+After configuration, use this for as a quick go-to command: 
     
-    mvn clean verify -DskipTests
+    mvn clean install -DskipTests
 
 If the project is running correctly
 ## 4) What are the Contribution guidelines?
 
 #### 4.1) Writing tests.
 
-_There is a sample of Unit testing, Integration testing, Functional testing and a non-spring Testing._
+_There is a sample of Unit testing, Integration testing, Functional testing and a single non-spring Testing._
 
 #### 4.2) Code review.
 
