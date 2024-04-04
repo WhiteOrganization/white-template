@@ -45,8 +45,8 @@ public class WhiteTemplate {
 		String logID = "::main(args[]): ";
 		log.trace("{}Start", logID);
 		try {
-//			launchWebApplication(args);
-			launchWebAndDesktopApplication(args);
+			launchWebApplication(args);
+//			launchWebAndDesktopApplication(args);
 			
 //			executeTestsWithJUnitLauncher();System.exit(0);
 			

@@ -17,8 +17,8 @@ import java.time.Duration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@lombok.extern.slf4j.Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@lombok.extern.slf4j.Slf4j
 public class MainControllerFunctionalIT extends SeleniumJupiterScenario {
 	
 	//region SeleniumJupiter Extension
