@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import org.junit.platform.engine.discovery.ClassNameFilter;
@@ -128,7 +128,6 @@ public class MainController {
 				.toLowerCase());
 		log.info("{}********************************", logID);
 		
-		
 		java.util.List<TestExecutionSummary.Failure> failures = summary.getFailures();
 		failures.forEach(failure -> log.error(logID+"Failure", failure.getException()));
 	}
@@ -246,7 +245,18 @@ public class MainController {
 		log.trace("{}Finish - Deleted", logID);
 		return true;
 	}
-	
+
+	public void createSP() {
+		userRepository.createStoredProcedure();
+	}
+
+	public void callSP() {
+		int answer = userRepository.callQueriedStoredProcedure(2, 3);
+		JOptionPane.showMessageDialog(view, answer);
+		answer = userRepository.callStoredProcedure(2, 3);
+		JOptionPane.showMessageDialog(view, answer);
+	}
+
 	public static class TableUtils {
 		public static void loadData(JTable table, List<User> users) {
 			DefaultTableModel userModel = (DefaultTableModel) table.getModel();
