@@ -508,6 +508,9 @@
                 <!-- Eliminates the JavaDoc problems in later versions when you have problems in the documentation -->
                 <doclint>none</doclint>
                 <!-- endregion disable DockLint -->
+<!--                <name>spring.profiles.active</name>-->
+<!--                <value>disable-java8-doc-lint</value>-->
+                <activatedProperties>disable-java8-doc-lint</activatedProperties>
             </properties>
         </profile>
         <profile>
@@ -521,6 +524,9 @@
                 <doclint>none</doclint>
                 <!-- endregion disable DockLint -->
                 <excluded.tags>ExcludeWhenHeadless</excluded.tags>
+<!--                <name>spring.profiles.active</name>-->
+<!--                <value>headless</value>-->
+                <activatedProperties>headless</activatedProperties>
             </properties>
         </profile>
     </profiles>
