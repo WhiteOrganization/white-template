@@ -46,6 +46,8 @@
         <junit.jupiter.version>5.9.2</junit.jupiter.version>
         <junit.platform.version>1.3.2</junit.platform.version>
         <surefire.failsafe.plugin.version>3.0.0-M8</surefire.failsafe.plugin.version>
+        <surefire.version>2.22.2</surefire.version>
+        <skipUTs>false</skipUTs>
         <logs.path>${project.build.directory}/test-reports/logs</logs.path>
         </properties>
 
@@ -492,20 +494,37 @@
 
     </dependencies>
 
-    <!-- region disable DockLint -->
-    <!-- Eliminates the JavaDoc problems in later versions when you have problems in the documentation -->
+
+    <!-- region Profiles -->
     <profiles>
         <profile>
-            <id>disable-java8-doclint</id>
+            <id>disable-java8-doc-lint</id>
             <activation>
-                <jdk>[1.8,)</jdk>
+                <activeByDefault>true</activeByDefault>
+<!--                <jdk>[1.8,)</jdk>-->
             </activation>
             <properties>
+                <!-- region disable DockLint -->
+                <!-- Eliminates the JavaDoc problems in later versions when you have problems in the documentation -->
                 <doclint>none</doclint>
+                <!-- endregion disable DockLint -->
+            </properties>
+        </profile>
+        <profile>
+            <id>cli-execution</id>
+<!--            <activation>-->
+<!--                <jdk>[1.8,)</jdk>-->
+<!--            </activation>-->
+            <properties>
+                <!-- region disable DockLint -->
+                <!-- Eliminates the JavaDoc problems in later versions when you have problems in the documentation -->
+                <doclint>none</doclint>
+                <!-- endregion disable DockLint -->
+                <excluded.tags>CLI-Excluded</excluded.tags>
             </properties>
         </profile>
     </profiles>
-    <!-- endregion disable DockLint -->
+    <!-- endregion Profiles -->
 
     <build>
 <!--        <finalName>${project.artifactId}</finalName>-->
@@ -719,7 +738,7 @@
             </plugin>
             <!--endregion-->
 
-            <!-- region Maven is able to run JUnit5 Tests (surefire) -->
+            <!-- region Maven is able to run JUnit5 Unit Tests (surefire) -->
             <!-- This requires junit-jupiter-engine [in junit-jupiter] dependency! -->
             <!-- This will run everything that Starts or ends with Test[(Case)|s]{0-1}. -->
 <!--            <plugin>-->
@@ -761,6 +780,7 @@
                 <configuration>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <reportsDirectory>${logs.path}</reportsDirectory>
+                    <skipTests>${skipUTs}</skipTests>
                 </configuration>
             </plugin>
 
@@ -794,6 +814,8 @@
                 </executions>
                 <configuration>
                     <reportsDirectory>${logs.path}</reportsDirectory>
+                    <!--suppress MavenModelInspection -->
+                    <excludedGroups>${excluded.tags}</excludedGroups>
                 </configuration>
             </plugin>
             <!-- endregion Maven runs Integration Tests -->

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.white_sdev.templates.white_template.controller.MainController;
 
@@ -12,8 +13,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 
-@Slf4j
 @Component
+@Profile("!cli-execution")
+@Slf4j
 @SuppressWarnings("all")
 public class UserFrame extends javax.swing.JFrame implements InitializingBean {
 	

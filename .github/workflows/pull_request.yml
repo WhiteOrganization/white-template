@@ -28,4 +28,4 @@ jobs:
 
       - name: Build and test
         run: |
-          mvn test verify
+          mvn validate test verify -Pcli-execution
