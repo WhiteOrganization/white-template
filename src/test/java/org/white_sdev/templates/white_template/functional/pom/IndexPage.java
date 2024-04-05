@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.white_sdev.templates.white_template.model.User;
+import org.white_sdev.templates.white_template.model.persistence.User;
 import org.white_sdev.white_seleniumframework.framework.WebDriverUtils;
 
 import java.util.List;
@@ -33,12 +33,14 @@ public class IndexPage {
 	WebElement submitButton;
 	
 	@FindBy(xpath = "//*[text() = 'Synchronize']")
+	@SuppressWarnings("unused")
 	WebElement synchronizeButton; //requires an implicit wait utils works best for this case
 	
 	@FindAll(@FindBy(xpath = "/html/body/div[3]/table//tr/td[1]"))
 	List<WebElement> rowsOfTable;
-	
-	
+
+
+	@SuppressWarnings("unused")
 	public IndexPage openPage(){
 		return openPage(8080);
 	}

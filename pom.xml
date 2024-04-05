@@ -46,8 +46,12 @@
         <junit.jupiter.version>5.9.2</junit.jupiter.version>
         <junit.platform.version>1.3.2</junit.platform.version>
         <surefire.failsafe.plugin.version>3.0.0-M8</surefire.failsafe.plugin.version>
+        <surefire.version>2.22.2</surefire.version>
+        <skipTests>false</skipTests>
+        <skipITs>${skipTests}</skipITs>
+        <skipUTs>${skipTests}</skipUTs>
         <logs.path>${project.build.directory}/test-reports/logs</logs.path>
-    </properties>
+        </properties>
 
     <repositories>
         <!-- region GiHub JitPack.io dependencies -->
@@ -301,10 +305,11 @@
         <!-- endregion White_SeleniumFramework -->
         <!-- region bonigarcia WebDriverManager -->
         <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.3.3</version>
+            <version>5.7.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-io</groupId>
@@ -491,20 +496,43 @@
 
     </dependencies>
 
-    <!-- region disable DockLint -->
-    <!-- Eliminates the JavaDoc problems in later versions when you have problems in the documentation -->
+
+    <!-- region Profiles -->
     <profiles>
         <profile>
-            <id>disable-java8-doclint</id>
+            <id>disable-java8-doc-lint</id>
             <activation>
-                <jdk>[1.8,)</jdk>
+                <activeByDefault>true</activeByDefault>
+<!--                <jdk>[1.8,)</jdk>-->
             </activation>
             <properties>
+                <!-- region disable DockLint -->
+                <!-- Eliminates the JavaDoc problems in later versions when you have problems in the documentation -->
                 <doclint>none</doclint>
+                <!-- endregion disable DockLint -->
+<!--                <name>spring.profiles.active</name>-->
+<!--                <value>disable-java8-doc-lint</value>-->
+                <activatedProperties>disable-java8-doc-lint</activatedProperties>
+            </properties>
+        </profile>
+        <profile>
+            <id>headless</id>
+<!--            <activation>-->
+<!--                <jdk>[1.8,)</jdk>-->
+<!--            </activation>-->
+            <properties>
+                <!-- region disable DockLint -->
+                <!-- Eliminates the JavaDoc problems in later versions when you have problems in the documentation -->
+                <doclint>none</doclint>
+                <!-- endregion disable DockLint -->
+                <excluded.tags>ExcludeWhenHeadless</excluded.tags>
+<!--                <name>spring.profiles.active</name>-->
+<!--                <value>headless</value>-->
+                <activatedProperties>headless</activatedProperties>
             </properties>
         </profile>
     </profiles>
-    <!-- endregion disable DockLint -->
+    <!-- endregion Profiles -->
 
     <build>
 <!--        <finalName>${project.artifactId}</finalName>-->
@@ -516,6 +544,13 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <!-- This will do the same for test. -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
         <!--endregion  -->
         <!-- compiles the src test with the rest of the code, so it will be able to identify tests classes from the src/java section -->
 <!--        <testOutputDirectory>target/classes</testOutputDirectory>-->
@@ -569,33 +604,33 @@
                 </configuration>
                 <executions>
                     <!-- region Package JAR execution -->
-                    <!-- you probably won't require to run your application like this (with an executable jar) if it is dockerized -->
-                    <!-- uncomment this if you stop using docker or truly require to run your application on the package phase -->
-<!--                    <execution>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>java</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
+                    <!-- you probably won't require running your application like this (with an executable jar) if it is dockerized -->
+                    <!-- uncomment this if you stop using docker or truly require running your application on the package phase -->
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
                     <!-- endregion Package JAR execution -->
 
                     <!-- region Docker execution -->
                     <!-- The docker image execution depends on the docker image generation (kubernetes-maven-plugin) -->
-                    <execution>
-                        <id>docker-compose</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>docker-compose</executable>
-                            <arguments>
-                                <argument>--project-directory</argument>
-                                <argument>src\main\docker</argument>
-                                <argument>up</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
+<!--                    <execution>-->
+<!--                        <id>docker-compose</id>-->
+<!--                        <phase>install</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>exec</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <executable>docker-compose</executable>-->
+<!--                            <arguments>-->
+<!--                                <argument>&#45;&#45;project-directory</argument>-->
+<!--                                <argument>src\main\docker</argument>-->
+<!--                                <argument>up</argument>-->
+<!--                            </arguments>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
                      <!-- endregion Docker execution -->
 
                     <execution>
@@ -711,7 +746,7 @@
             </plugin>
             <!--endregion-->
 
-            <!-- region Maven is able to run JUnit5 Tests (surefire) -->
+            <!-- region Maven is able to run JUnit5 Unit Tests (surefire) -->
             <!-- This requires junit-jupiter-engine [in junit-jupiter] dependency! -->
             <!-- This will run everything that Starts or ends with Test[(Case)|s]{0-1}. -->
 <!--            <plugin>-->
@@ -753,6 +788,8 @@
                 <configuration>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <reportsDirectory>${logs.path}</reportsDirectory>
+                    <!-- override sufrefire plugins behaviors, provided by: https://stackoverflow.com/questions/6612344/prevent-unit-tests-but-allow-integration-tests-in-maven#:~:text=%20%3Cskiptests%3E%24%7Bskiptests%7D%3C%2Fskiptests%3E%20%3Cskipits%3E%24%7Bskipits%7D%3C%2Fskipits%3E -->
+                    <skipTests>${skipUTs}</skipTests>
                 </configuration>
             </plugin>
 
@@ -786,6 +823,11 @@
                 </executions>
                 <configuration>
                     <reportsDirectory>${logs.path}</reportsDirectory>
+                    <!--suppress MavenModelInspection -->
+                    <excludedGroups>${excluded.tags}</excludedGroups>
+                    <!-- override sufrefire plugins behaviors, provided by: https://stackoverflow.com/questions/6612344/prevent-unit-tests-but-allow-integration-tests-in-maven#:~:text=%20%3Cskiptests%3E%24%7Bskiptests%7D%3C%2Fskiptests%3E%20%3Cskipits%3E%24%7Bskipits%7D%3C%2Fskipits%3E -->
+                    <skipTests>${skipTests}</skipTests>
+                    <skipITs>${skipITs}</skipITs>
                 </configuration>
             </plugin>
             <!-- endregion Maven runs Integration Tests -->

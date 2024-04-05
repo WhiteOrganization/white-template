@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import org.junit.platform.engine.discovery.ClassNameFilter;
@@ -24,7 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.white_sdev.templates.white_template.model.User;
+import org.white_sdev.templates.white_template.model.persistence.User;
+import org.white_sdev.templates.white_template.repo.UserRepository;
 import org.white_sdev.templates.white_template.view.UserFrame;
 
 
@@ -35,12 +36,17 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPacka
 @RestController()
 @RequestMapping("/api")
 public class MainController {
-	
+
+	UserRepository userRepository;
+	public MainController(UserRepository userRepository){
+		this.userRepository = userRepository;
+	}
+
 	@Setter
 	public UserFrame view;
 	
 	public void loadUsers() {
-		String logID = "loadUsers()::";
+		String logID = "::loadUsers():";
 		log.trace("{}Start", logID);
 		TableUtils.loadData(view.getUserTable(), getUsers());
 	}
@@ -122,23 +128,29 @@ public class MainController {
 				.toLowerCase());
 		log.info("{}********************************", logID);
 		
-		
 		java.util.List<TestExecutionSummary.Failure> failures = summary.getFailures();
 		failures.forEach(failure -> log.error(logID+"Failure", failure.getException()));
 	}
 	
 	
-	Set<User> users = new HashSet<>() {{
-		add(new User("foo", "foo@dummy.com"));
-		add(new User("bar", "bar@dummy.com"));
-	}};
+//	Set<User> users = new HashSet<>() {{
+//		add(new User("foo", "foo@dummy.com"));
+//		add(new User("bar", "bar@dummy.com"));
+//	}};
 	
 	public Set<User> getUsersSet(){
-		return users;
+		String logID="::getUsersSet(): ";
+		log.trace("{}Start - Calling findAll() from UserRepo", logID);
+		Set<User> allUsers =  new HashSet<>(userRepository.findAll());
+		log.trace("{}Finish - allUsers:{}", logID, allUsers);
+		return allUsers;
 	}
 	
 	public boolean create(User user) {
-		return users.add(user);
+		String logID="::create(user): ";
+		log.trace("{}Start - adding user:{}", logID, user);
+		userRepository.save(user);
+		return true;
 	}
 	
 	public void rowSelected() {
@@ -164,7 +176,7 @@ public class MainController {
 			if (selectedUser == null) {
 				save(user);
 			} else {
-				update(user);
+				update(selectedUser, user);
 			}
 		} catch (Exception ex) {
 			javax.swing.JOptionPane.showMessageDialog(view, "There is an error with your user:\n" + ex.getMessage());
@@ -185,14 +197,16 @@ public class MainController {
 	}
 	
 	
-	public void update(User updatedUser) {
-		for (User user : users) {
-			if (user.equals(selectedUser)) {
-				user.setFirstName(updatedUser.getFirstName());
-				user.setEmail(updatedUser.getEmail());
-				break;
-			}
-		}
+	public void update(User selectedUser, User updatedUser) {
+		userRepository.findById(selectedUser.getId()).orElseThrow().updateWith(updatedUser);
+		userRepository.flush();
+//		for (User user : users) {
+//			if (user.equals(selectedUser)) {
+//				user.setFirstName(updatedUser.getFirstName());
+//				user.setEmail(updatedUser.getEmail());
+//				break;
+//			}
+//		}
 		javax.swing.JOptionPane.showMessageDialog(view, "User Updated");
 		clear();
 		loadUsers();
@@ -222,9 +236,27 @@ public class MainController {
 	}
 	
 	public boolean remove(User user){
-		return users.remove(user);
+		String logID="::remove(user): ";
+		log.trace("{}Start - Calling UserRepo#delteById() on user:{}", logID, user);
+		User foundUser = userRepository.findByFirstName(user.getFirstName());
+		Long id = foundUser.getId();
+		log.debug("{}Deleting User with id:{}", logID, id);
+		userRepository.deleteById(id);
+		log.trace("{}Finish - Deleted", logID);
+		return true;
 	}
-	
+
+	public void createSP() {
+		userRepository.createStoredProcedure();
+	}
+
+	public void callSP() {
+		int answer = userRepository.callQueriedStoredProcedure(2, 3);
+		JOptionPane.showMessageDialog(view, answer);
+		answer = userRepository.callStoredProcedure(2, 3);
+		JOptionPane.showMessageDialog(view, answer);
+	}
+
 	public static class TableUtils {
 		public static void loadData(JTable table, List<User> users) {
 			DefaultTableModel userModel = (DefaultTableModel) table.getModel();

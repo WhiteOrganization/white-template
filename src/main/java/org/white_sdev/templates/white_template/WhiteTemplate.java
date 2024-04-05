@@ -14,7 +14,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
-import org.white_sdev.templates.white_template.controller.MainController;
 import org.white_sdev.templates.white_template.view.UserFrame;
 
 import javax.swing.*;
@@ -47,9 +46,9 @@ public class WhiteTemplate {
 		log.trace("{}Start", logID);
 		try {
 //			launchWebApplication(args);
-//			launchWebAndDesktopApplication(args);
-			
-			executeTestsWithJUnitLauncher();System.exit(0);
+			launchWebAndDesktopApplication(args);
+
+//			executeTestsWithJUnitLauncher();System.exit(0);
 			
 			log.trace("{}Finish", logID);
 			
@@ -62,9 +61,9 @@ public class WhiteTemplate {
 	public static ApplicationContext launchWebApplication(String[] args) {
 		return SpringApplication.run(WhiteTemplate.class, args);
 	}
-	
-	@SuppressWarnings("unused")
+
 	@SneakyThrows
+	@SuppressWarnings({"unused", "UnusedReturnValue"})
 	public static ApplicationContext launchWebAndDesktopApplication(String[] args) {
 		ApplicationContext springApplicationContext = new SpringApplicationBuilder(WhiteTemplate.class)
 				.headless(false)
@@ -99,7 +98,7 @@ public class WhiteTemplate {
 	
 	@SneakyThrows(UnsupportedLookAndFeelException.class)
 	public static void setFlatDarkLookAndFeel() {
-		String logID = "::setLookAndFeel([]): ";
+		String logID = "::setFlatDarkLookAndFeel(): ";
 		log.trace("{}Start Installing FlatDarkLookAndFeel", logID);
 		UIManager.setLookAndFeel(new FlatDarkLaf());
 	}
@@ -118,6 +117,7 @@ public class WhiteTemplate {
 	 * Specification: https://junit.org/junit5/docs/5.0.0/api/org/junit/platform/launcher/core/LauncherDiscoveryRequestBuilder.html
 	 * Some examples: https://www.baeldung.com/junit-tests-run-programmatically-from-java
 	 */
+	@SuppressWarnings("unused")
 	public static void executeTestsWithJUnitLauncher(){
 		String logID="::executeTestsWithLauncher([]): ";
 		log.trace("{}Start ", logID);

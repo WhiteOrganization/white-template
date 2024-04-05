@@ -39,17 +39,30 @@ public class NoSpringFunctionalIT {
 //	@DisplayName("Basic calculator operations Functional Test")
 //	@EnabledIfDriverUrlOnline("https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html")
 //	void calculatorTest(WebDriver driver) {
-	
+
+	public static boolean HEADLESS = true;
+	public static ChromeOptions chromeOptions = new ChromeOptions();
 	@BeforeAll
 	static void beforeAll() {
+		String logID="::beforeAll(): ";
+		log.trace("{}Start", logID);
+		chromeOptions.addArguments("--remote-allow-origins=*");
+		if(HEADLESS){
+			chromeOptions.addArguments("--headless=new");
+			chromeOptions.addArguments("--no-sandbox");
+			chromeOptions.addArguments("--disable-dev-shm-usage");
+			chromeOptions.addArguments("disable-gpu");
+			chromeOptions.addArguments("window-size=1980,960");
+		}else{
+			System.setProperty("java.awt.headless", "false");
+		}
 		WebDriverManager.chromedriver().setup();
+		log.trace("{}Finish", logID);
 	}
 	WebDriver driver;
 	@BeforeEach
 	void beforeEach() {
-		driver = new ChromeDriver(
-				new ChromeOptions().addArguments("--remote-allow-origins=*")
-		);
+		driver = new ChromeDriver(chromeOptions);
 	}
 	
 	@Test
