@@ -511,7 +511,7 @@
             </properties>
         </profile>
         <profile>
-            <id>cli-execution</id>
+            <id>headless</id>
 <!--            <activation>-->
 <!--                <jdk>[1.8,)</jdk>-->
 <!--            </activation>-->
@@ -520,7 +520,7 @@
                 <!-- Eliminates the JavaDoc problems in later versions when you have problems in the documentation -->
                 <doclint>none</doclint>
                 <!-- endregion disable DockLint -->
-                <excluded.tags>CLI-Excluded</excluded.tags>
+                <excluded.tags>ExcludeWhenHeadless</excluded.tags>
             </properties>
         </profile>
     </profiles>

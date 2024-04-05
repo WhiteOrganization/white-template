@@ -28,4 +28,4 @@ jobs:
 
       - name: Build and test
         run: |
-          mvn validate test verify -Pcli-execution
+          mvn validate test verify -Pheadless

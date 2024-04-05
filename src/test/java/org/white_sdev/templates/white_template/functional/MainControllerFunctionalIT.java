@@ -50,7 +50,7 @@ public class MainControllerFunctionalIT extends SeleniumJupiterScenario {
 
     @Test
     @Tag("IntegrationTest")
-    @Tag("CLI-Excluded")    //Impossible to work with headless from White_SeleniumFramework in this version.
+    @Tag("ExcludeWhenHeadless")    //Impossible to work with headless from White_SeleniumFramework in this version.
 //	@EnabledIfBrowserAvailable(Browser.CHROME)
 //	@EnabledIfDriverUrlOnline("http://localhost:8080")
     @DisplayName("Register a dummy user Functional Test")

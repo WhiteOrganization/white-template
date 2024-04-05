@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
 import java.net.URI;
 
 @Component
-@Profile("!cli-execution")
+@Profile("!headless")
 @Slf4j
 @SuppressWarnings("all")
 public class UserFrame extends javax.swing.JFrame implements InitializingBean {

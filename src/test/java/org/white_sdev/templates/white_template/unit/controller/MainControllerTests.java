@@ -1,6 +1,7 @@
 package org.white_sdev.templates.white_template.unit.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -43,6 +44,8 @@ public class MainControllerTests { //surefire detects names that starts with Tes
 	}
 	
 	@Test
+	@Tag("UnitTest")
+	@Tag("ExcludeWhenHeadless")
 	public void saveTest(){
 		String logID="::saveTest(): ";
 		log.info("{}Start", logID);
